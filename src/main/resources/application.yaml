@@ -1,0 +1,46 @@
+#Spring
+spring:
+  application:
+    name: demo
+  jackson:
+    time-zone: Europe/Istanbul
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  main:
+    allow-circular-references: true
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/Demo'
+    username: postgres
+    password: test
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+#Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    enabled-by-default: false
+
+#Logging
+logging:
+  level:
+    root: info
+#  file:
+#    name: logs/app.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 1KB
+#      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+
+#Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger
+    enabled: true
