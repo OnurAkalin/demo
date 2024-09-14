@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,10 +15,6 @@ import java.util.Date;
 public class Model extends BaseEntity {
 	@Column(name = "name")
 	private String name;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "arsiv_tarihi")
-	private Date arsivTarihi;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "brand_id")

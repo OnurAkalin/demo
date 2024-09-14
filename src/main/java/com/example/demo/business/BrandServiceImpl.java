@@ -72,7 +72,19 @@ public class BrandServiceImpl implements BrandService {
 
 		mapper.toEntity(updateBrandRequest, brand);
 		brandRepository.save(brand);
-		brandRepository.updateRelatedTables(brand.getId());
+
+		return new SuccessResult(UIMessages.SUCCESS);
+	}
+
+	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+	@CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+	@Override
+	public Result delete(int id) {
+		Brand brand = brandRepository.findById(id).orElse(null);
+		if (brand == null) {
+			return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+		}
+		brandRepository.delete(brand);
 
 		return new SuccessResult(UIMessages.SUCCESS);
 	}

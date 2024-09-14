@@ -16,20 +16,20 @@ public abstract class BaseEntity {
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "yaratilma_zamani")
-	private Date yaratilmaZamani;
+	@Column(name = "created_date")
+	private Date createdDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "guncelleme_zamani")
-	private Date guncellemeZamani;
+	@Column(name = "last_modified_date")
+	private Date lastModifiedDate;
 
 	@PrePersist
 	protected void onCreate() {
-		yaratilmaZamani = new Date();
+		createdDate = new Date();
 	}
 
 	@PreUpdate
 	protected void onUpdate() {
-		guncellemeZamani = new Date();
+		lastModifiedDate = new Date();
 	}
 }

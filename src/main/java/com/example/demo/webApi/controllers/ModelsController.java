@@ -38,4 +38,9 @@ public class ModelsController {
 	public ResponseEntity<Result> update(@RequestBody UpdateModelRequest updateModelRequest) {
 		return ResponseEntity.ok(modelService.update(updateModelRequest));
 	}
+
+	@PostMapping(path = "/delete/{id}")
+	public ResponseEntity<Result> delete(@PathVariable int id) {
+		return ResponseEntity.ok(modelService.delete(id));
+	}
 }

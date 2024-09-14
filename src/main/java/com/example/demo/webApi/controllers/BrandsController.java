@@ -38,4 +38,9 @@ public class BrandsController {
 	public ResponseEntity<Result> update(@RequestBody UpdateBrandRequest updateBrandRequest) {
 		return ResponseEntity.ok(brandService.update(updateBrandRequest));
 	}
+
+	@PostMapping(path = "/delete/{id}")
+	public ResponseEntity<Result> delete(@PathVariable int id) {
+		return ResponseEntity.ok(brandService.delete(id));
+	}
 }

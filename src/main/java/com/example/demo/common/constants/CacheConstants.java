@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 public final class CacheConstants {
 	public static final int CACHE_DURATION_MIN = 10;
 	public static final String BRANDS = "brands";
+	public static final String MODELS = "models";
 	public static final String ALL_KEY = "'all'";
 }

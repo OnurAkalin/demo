@@ -17,4 +17,6 @@ public interface ModelService {
 	Result add(CreateModelRequest createModelRequest);
 
 	Result update(UpdateModelRequest updateModelRequest);
+
+	Result delete(int id);
 }
