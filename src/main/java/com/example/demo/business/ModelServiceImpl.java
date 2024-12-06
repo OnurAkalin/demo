@@ -24,12 +24,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 public class ModelServiceImpl implements ModelService {
 	private final ModelRepository modelRepository;
 	private final BrandRepository brandRepository;
 	private final ModelMapper mapper;
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@Cacheable(value = CacheConstants.MODELS, key = "#id")
 	@Override
 	public DataResult<GetModelDetailsResponse> getById(int id) {
@@ -43,18 +43,17 @@ public class ModelServiceImpl implements ModelService {
 		return new SuccessDataResult<>(response, UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@Cacheable(value = CacheConstants.MODELS, key = CacheConstants.ALL_KEY)
 	@Override
 	public DataResult<List<GetModelResponse>> getAll() {
 		List<GetModelResponse> response;
 		List<Model> models = modelRepository.findAll();
+
 		response = mapper.toDtoList(models);
 
 		return new SuccessDataResult<>(response, UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
 	@Override
 	public Result add(CreateModelRequest createModelRequest) {
@@ -70,7 +69,6 @@ public class ModelServiceImpl implements ModelService {
 		return new SuccessResult(UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
 	@Override
 	public Result update(UpdateModelRequest updateModelRequest) {
@@ -91,7 +89,6 @@ public class ModelServiceImpl implements ModelService {
 		return new SuccessResult(UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
 	@Override
 	public Result delete(int id) {

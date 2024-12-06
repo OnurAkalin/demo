@@ -22,11 +22,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 public class BrandServiceImpl implements BrandService {
 	private final BrandRepository brandRepository;
 	private final BrandMapper mapper;
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@Cacheable(value = CacheConstants.BRANDS, key = "#id")
 	@Override
 	public DataResult<GetBrandDetailsResponse> getById(int id) {
@@ -40,28 +40,27 @@ public class BrandServiceImpl implements BrandService {
 		return new SuccessDataResult<>(response, UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@Cacheable(value = CacheConstants.BRANDS, key = CacheConstants.ALL_KEY)
 	@Override
 	public DataResult<List<GetBrandResponse>> getAll() {
 		List<GetBrandResponse> response;
 		var brands = brandRepository.findAll();
+
 		response = mapper.toDtoList(brands);
 
 		return new SuccessDataResult<>(response, UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
 		Brand brand = mapper.toEntity(createBrandRequest);
+
 		brandRepository.save(brand);
 
 		return new SuccessResult(UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
@@ -76,7 +75,6 @@ public class BrandServiceImpl implements BrandService {
 		return new SuccessResult(UIMessages.SUCCESS);
 	}
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	@CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
 	@Override
 	public Result delete(int id) {
@@ -84,6 +82,7 @@ public class BrandServiceImpl implements BrandService {
 		if (brand == null) {
 			return new ErrorResult(UIMessages.NOT_FOUND_DATA);
 		}
+
 		brandRepository.delete(brand);
 
 		return new SuccessResult(UIMessages.SUCCESS);
