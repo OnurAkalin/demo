@@ -1,7 +1,7 @@
 services:
 
   app:
-    container_name: App
+    container_name: SpringApp
     build: .
     ports:
       - "8080:8080"
@@ -18,7 +18,7 @@ services:
       - app-network
 
   db:
-    image: postgres
+    image: postgres:17.2
     container_name: Postgres
     restart: always
     environment:
@@ -27,13 +27,16 @@ services:
       - POSTGRES_DB=Demo
     ports:
       - "5432:5432"
+    command: >
+      postgres
+      -c log_statement=mod
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - app-network
 
   cache:
-    image: redis
+    image: redis:7.4
     container_name: Redis
     restart: always
     ports:
