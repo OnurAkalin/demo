@@ -5,6 +5,7 @@ services:
     build: .
     ports:
       - "8080:8080"
+      - "5005:5005" # Debug portu *ekstra
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/Demo
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -27,7 +28,7 @@ services:
       - POSTGRES_DB=Demo
     ports:
       - "5432:5432"
-    command: >
+    command: > # insert-update-delete loglarını basmak için db komutu
       postgres
       -c log_statement=mod
     volumes:

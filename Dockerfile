@@ -19,8 +19,8 @@ FROM openjdk:17 AS deploy
 # Derlenmiş JAR dosyasını alır. (multi-stage build) kullanırken, önceki aşamalardan dosya kopyalamak için kullanılır.
 COPY --from=build /app/target/*.jar app.jar
 
-# Uygulama çalıştırma komutu
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# Uygulama çalıştırma komutu ------------ jvm'e 5005 portu üzerinden socket açar
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app.jar"]
 
 
 
