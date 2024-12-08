@@ -7,6 +7,12 @@ FROM maven:3.8.5-openjdk-17 AS build
 # /app konteyner içinde belirtilen dizindir ve her RUN, CMD, ENTRYPOINT, COPY, ADD gibi komutlar bu dizin içinde çalışır.
 WORKDIR /app
 
+# Proje bağımlılıklarını yüklemek için önce `pom.xml`'i kopyala
+COPY pom.xml pom.xml
+
+# Bağımlılıkları yükler - container altında
+RUN mvn dependency:go-offline
+
 # Proje dosyalarını kopyalar container içinde oluşan /app isimli çalışma dizinine kopyalar
 COPY . .
 
