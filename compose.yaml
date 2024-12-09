@@ -12,6 +12,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=test
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_DATA_REDIS_HOST=cache
+      - TZ=Europe/Istanbul
     depends_on:
       - db
       - cache

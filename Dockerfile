@@ -35,6 +35,11 @@ ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,addre
 
 
 
+
+
+
+
+
 # Localde clean install yapılırsa aşağıdaki kısım yeterli oluyor.
 
 #FROM openjdk:17
