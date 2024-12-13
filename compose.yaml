@@ -3,6 +3,8 @@ services:
   app:
     container_name: SpringApp
     build: .
+    image: demo-app:1.0 # build ile oluşan image'i 1.0 olarak tagler
+    pull_policy: never # docker hub üzerinde bu tag var mı diye kontrol etmemesi için komut
     ports:
       - "8080:8080"
       - "5005:5005" # Debug portu *ekstra
