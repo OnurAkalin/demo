@@ -8,6 +8,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    open-in-view: true
   main:
     allow-circular-references: true
   datasource:
@@ -25,8 +26,9 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
-    enabled-by-default: false
+        include: health, info, metrics
+    access:
+      default: unrestricted
 
 #Logging
 logging:
