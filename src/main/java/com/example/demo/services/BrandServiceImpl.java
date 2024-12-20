@@ -25,7 +25,7 @@ import java.util.List;
 @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
-    private final BrandMapper mapper;
+    private final BrandMapper brandMapper;
 
     @Cacheable(value = CacheConstants.BRANDS, key = "#id")
     @Override
@@ -35,7 +35,7 @@ public class BrandServiceImpl implements BrandService {
             return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
         }
 
-        GetBrandDetailsResponse response = mapper.toDetailsDto(brand);
+        GetBrandDetailsResponse response = brandMapper.toDetailsDto(brand);
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
@@ -46,7 +46,7 @@ public class BrandServiceImpl implements BrandService {
         List<GetBrandResponse> response;
         var brands = brandRepository.findAll();
 
-        response = mapper.toDtoList(brands);
+        response = brandMapper.toDtoList(brands);
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
@@ -54,7 +54,7 @@ public class BrandServiceImpl implements BrandService {
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
     @Override
     public Result add(CreateBrandRequest createBrandRequest) {
-        Brand brand = mapper.toEntity(createBrandRequest);
+        Brand brand = brandMapper.toEntity(createBrandRequest);
 
         brandRepository.save(brand);
 
@@ -69,7 +69,7 @@ public class BrandServiceImpl implements BrandService {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);
         }
 
-        mapper.toEntity(updateBrandRequest, brand);
+        brandMapper.toEntity(updateBrandRequest, brand);
         brandRepository.save(brand);
 
         return new SuccessResult(UIMessages.SUCCESS);

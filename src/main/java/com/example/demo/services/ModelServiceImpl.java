@@ -28,7 +28,7 @@ import java.util.List;
 public class ModelServiceImpl implements ModelService {
     private final ModelRepository modelRepository;
     private final BrandRepository brandRepository;
-    private final ModelMapper mapper;
+    private final ModelMapper modelMapper;
 
     @Cacheable(value = CacheConstants.MODELS, key = "#id")
     @Override
@@ -38,7 +38,7 @@ public class ModelServiceImpl implements ModelService {
             return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
         }
 
-        GetModelDetailsResponse response = mapper.toDetailsDto(model);
+        GetModelDetailsResponse response = modelMapper.toDetailsDto(model);
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
@@ -49,7 +49,7 @@ public class ModelServiceImpl implements ModelService {
         List<GetModelResponse> response;
         List<Model> models = modelRepository.findAll();
 
-        response = mapper.toDtoList(models);
+        response = modelMapper.toDtoList(models);
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
@@ -62,7 +62,7 @@ public class ModelServiceImpl implements ModelService {
             return new ErrorResult(UIMessages.ERROR);
         }
 
-        Model model = mapper.toEntity(createModelRequest);
+        Model model = modelMapper.toEntity(createModelRequest);
         model.setBrand(brand);
         modelRepository.save(model);
 
@@ -82,7 +82,7 @@ public class ModelServiceImpl implements ModelService {
             return new ErrorResult(UIMessages.ERROR);
         }
 
-        mapper.toEntity(updateModelRequest, model);
+        modelMapper.toEntity(updateModelRequest, model);
         model.setBrand(brand);
         modelRepository.save(model);
 
