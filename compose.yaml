@@ -43,6 +43,7 @@ services:
     image: redis:7.4
     container_name: Redis
     restart: always
+    command: redis-server --requirepass redis-password
     ports:
       - "6379:6379"
     volumes:
