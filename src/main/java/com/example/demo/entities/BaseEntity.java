@@ -10,26 +10,26 @@ import java.util.Date;
 @Setter
 @MappedSuperclass
 public abstract class BaseEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_date")
-	private Date createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date")
+    private Date createdDate;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_modified_date")
-	private Date lastModifiedDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
 
-	@PrePersist
-	protected void onCreate() {
-		createdDate = new Date();
-	}
+    @PrePersist
+    protected void onCreate() {
+        createdDate = new Date();
+    }
 
-	@PreUpdate
-	protected void onUpdate() {
-		lastModifiedDate = new Date();
-	}
+    @PreUpdate
+    protected void onUpdate() {
+        lastModifiedDate = new Date();
+    }
 }

@@ -1,0 +1,90 @@
+package com.example.demo.services;
+
+import com.example.demo.entities.Brand;
+import com.example.demo.repositories.BrandRepository;
+import com.example.demo.mappers.BrandMapper;
+import com.example.demo.dtos.requests.CreateBrandRequest;
+import com.example.demo.dtos.requests.UpdateBrandRequest;
+import com.example.demo.dtos.responses.GetBrandDetailsResponse;
+import com.example.demo.dtos.responses.GetBrandResponse;
+import com.example.demo.utils.constants.CacheConstants;
+import com.example.demo.utils.constants.UIMessages;
+import com.example.demo.utils.result.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+public class BrandServiceImpl implements BrandService {
+    private final BrandRepository brandRepository;
+    private final BrandMapper mapper;
+
+    @Cacheable(value = CacheConstants.BRANDS, key = "#id")
+    @Override
+    public DataResult<GetBrandDetailsResponse> getById(int id) {
+        Brand brand = brandRepository.findById(id).orElse(null);
+        if (brand == null) {
+            return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
+        }
+
+        GetBrandDetailsResponse response = mapper.toDetailsDto(brand);
+
+        return new SuccessDataResult<>(response, UIMessages.SUCCESS);
+    }
+
+    @Cacheable(value = CacheConstants.BRANDS, key = CacheConstants.ALL_KEY)
+    @Override
+    public DataResult<List<GetBrandResponse>> getAll() {
+        List<GetBrandResponse> response;
+        var brands = brandRepository.findAll();
+
+        response = mapper.toDtoList(brands);
+
+        return new SuccessDataResult<>(response, UIMessages.SUCCESS);
+    }
+
+    @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Override
+    public Result add(CreateBrandRequest createBrandRequest) {
+        Brand brand = mapper.toEntity(createBrandRequest);
+
+        brandRepository.save(brand);
+
+        return new SuccessResult(UIMessages.SUCCESS);
+    }
+
+    @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Override
+    public Result update(UpdateBrandRequest updateBrandRequest) {
+        Brand brand = brandRepository.findById(updateBrandRequest.getId()).orElse(null);
+        if (brand == null) {
+            return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+        }
+
+        mapper.toEntity(updateBrandRequest, brand);
+        brandRepository.save(brand);
+
+        return new SuccessResult(UIMessages.SUCCESS);
+    }
+
+    @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Override
+    public Result delete(int id) {
+        Brand brand = brandRepository.findById(id).orElse(null);
+        if (brand == null) {
+            return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+        }
+
+        brandRepository.delete(brand);
+
+        return new SuccessResult(UIMessages.SUCCESS);
+    }
+}

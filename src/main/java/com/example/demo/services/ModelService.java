@@ -1,0 +1,22 @@
+package com.example.demo.services;
+
+import com.example.demo.dtos.requests.CreateModelRequest;
+import com.example.demo.dtos.requests.UpdateModelRequest;
+import com.example.demo.dtos.responses.GetModelDetailsResponse;
+import com.example.demo.dtos.responses.GetModelResponse;
+import com.example.demo.utils.result.DataResult;
+import com.example.demo.utils.result.Result;
+
+import java.util.List;
+
+public interface ModelService {
+    DataResult<GetModelDetailsResponse> getById(int id);
+
+    DataResult<List<GetModelResponse>> getAll();
+
+    Result add(CreateModelRequest createModelRequest);
+
+    Result update(UpdateModelRequest updateModelRequest);
+
+    Result delete(int id);
+}

@@ -15,9 +15,9 @@ import java.util.List;
 @Entity()
 @Table(name = "brands")
 public class Brand extends BaseEntity {
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	@OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-	private List<Model> models;
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Model> models;
 }
