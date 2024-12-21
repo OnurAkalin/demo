@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,21 +15,19 @@ public abstract class BaseEntity {
     @Column(name = "id")
     private int id;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_modified_date")
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @PrePersist
     protected void onCreate() {
-        createdDate = new Date();
+        createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        lastModifiedDate = new Date();
+        lastModifiedDate = LocalDateTime.now();
     }
 }
