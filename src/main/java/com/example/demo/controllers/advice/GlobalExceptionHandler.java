@@ -1,6 +1,6 @@
 package com.example.demo.controllers.advice;
 
-import com.example.demo.utils.constants.UIMessages;
+import com.example.demo.constants.UIMessages;
 import com.example.demo.utils.result.ErrorResult;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

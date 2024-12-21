@@ -1,6 +1,6 @@
 package com.example.demo.configurations;
 
-import com.example.demo.utils.constants.CacheConstants;
+import com.example.demo.constants.CacheConstants;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

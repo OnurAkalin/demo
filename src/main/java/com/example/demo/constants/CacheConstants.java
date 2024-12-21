@@ -1,4 +1,4 @@
-package com.example.demo.utils.constants;
+package com.example.demo.constants;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
