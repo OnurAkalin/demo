@@ -53,14 +53,14 @@ services:
       - app-network
 
   kafka:
-    image: apache/kafka
+    image: apache/kafka:3.9.0
     container_name: kafka
     ports:
       - '9092:9092'
     volumes:
-      - kafka-data:/var/lib/kafka/data  # Kafka'nın tüm dizinlerini tek volume'de topluyoruz
-      - kafka-config:/mnt/shared/config  # Kafka config dizini
-      - kafka-secrets:/etc/kafka/secrets  # Kafka secrets dizini
+      - kafka-data:/var/lib/kafka/data
+      - kafka-config:/mnt/shared/config
+      - kafka-secrets:/etc/kafka/secrets
     networks:
       - app-network
 
