@@ -18,6 +18,7 @@ services:
     depends_on:
       - db
       - cache
+      - kafka
     networks:
       - app-network
 
@@ -51,9 +52,25 @@ services:
     networks:
       - app-network
 
+  kafka:
+    image: apache/kafka
+    container_name: kafka
+    ports:
+      - '9092:9092'
+    volumes:
+      - kafka-data:/var/lib/kafka/data  # Kafka'nın tüm dizinlerini tek volume'de topluyoruz
+      - kafka-config:/mnt/shared/config  # Kafka config dizini
+      - kafka-secrets:/etc/kafka/secrets  # Kafka secrets dizini
+    networks:
+      - app-network
+
+
 volumes:
   db-data:
   cache-data:
+  kafka-data:
+  kafka-config:
+  kafka-secrets:
 
 networks:
   app-network:
