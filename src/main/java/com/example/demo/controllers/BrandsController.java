@@ -20,7 +20,7 @@ public class BrandsController {
     private final BrandService brandService;
 
     @GetMapping(path = "/get/{id}")
-    public ResponseEntity<DataResult<GetBrandDetailsResponse>> getById(@PathVariable int id) {
+    public ResponseEntity<DataResult<GetBrandDetailsResponse>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(brandService.getById(id));
     }
 
@@ -40,7 +40,7 @@ public class BrandsController {
     }
 
     @PostMapping(path = "/delete/{id}")
-    public ResponseEntity<Result> delete(@PathVariable int id) {
+    public ResponseEntity<Result> delete(@PathVariable Long id) {
         return ResponseEntity.ok(brandService.delete(id));
     }
 }

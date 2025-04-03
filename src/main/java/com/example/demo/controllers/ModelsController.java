@@ -20,7 +20,7 @@ public class ModelsController {
     private final ModelService modelService;
 
     @GetMapping(path = "/get/{id}")
-    public ResponseEntity<DataResult<GetModelDetailsResponse>> getById(@PathVariable int id) {
+    public ResponseEntity<DataResult<GetModelDetailsResponse>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(modelService.getById(id));
     }
 
@@ -40,7 +40,7 @@ public class ModelsController {
     }
 
     @PostMapping(path = "/delete/{id}")
-    public ResponseEntity<Result> delete(@PathVariable int id) {
+    public ResponseEntity<Result> delete(@PathVariable Long id) {
         return ResponseEntity.ok(modelService.delete(id));
     }
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UpdateModelRequest {
-    private int id;
+    private Long id;
     private String name;
-    private int brandId;
+    private Long brandId;
 }

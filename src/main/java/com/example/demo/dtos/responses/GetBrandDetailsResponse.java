@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class GetBrandDetailsResponse {
-    private int id;
+    private Long id;
     private String name;
     List<GetModelResponse> models;
 }
