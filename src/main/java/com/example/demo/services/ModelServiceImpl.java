@@ -32,7 +32,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Cacheable(value = CacheConstants.MODELS, key = "#id")
     @Override
-    public DataResult<GetModelDetailsResponse> getById(int id) {
+    public DataResult<GetModelDetailsResponse> getById(Long id) {
         Model model = modelRepository.findById(id).orElse(null);
         if (model == null) {
             return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
@@ -91,7 +91,7 @@ public class ModelServiceImpl implements ModelService {
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
-    public Result delete(int id) {
+    public Result delete(Long id) {
         Model model = modelRepository.findById(id).orElse(null);
         if (model == null) {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);

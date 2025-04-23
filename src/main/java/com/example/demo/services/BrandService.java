@@ -10,7 +10,7 @@ import com.example.demo.utils.result.Result;
 import java.util.List;
 
 public interface BrandService {
-    DataResult<GetBrandDetailsResponse> getById(int id);
+    DataResult<GetBrandDetailsResponse> getById(Long id);
 
     DataResult<List<GetBrandResponse>> getAll();
 
@@ -18,5 +18,5 @@ public interface BrandService {
 
     Result update(UpdateBrandRequest updateBrandRequest);
 
-    Result delete(int id);
+    Result delete(Long id);
 }

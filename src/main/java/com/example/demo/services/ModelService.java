@@ -10,7 +10,7 @@ import com.example.demo.utils.result.Result;
 import java.util.List;
 
 public interface ModelService {
-    DataResult<GetModelDetailsResponse> getById(int id);
+    DataResult<GetModelDetailsResponse> getById(Long id);
 
     DataResult<List<GetModelResponse>> getAll();
 
@@ -18,5 +18,5 @@ public interface ModelService {
 
     Result update(UpdateModelRequest updateModelRequest);
 
-    Result delete(int id);
+    Result delete(Long id);
 }

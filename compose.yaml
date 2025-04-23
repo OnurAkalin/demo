@@ -18,11 +18,12 @@ services:
     depends_on:
       - db
       - cache
+      - kafka
     networks:
       - app-network
 
   db:
-    image: postgres:17.2
+    image: postgres:17.4
     container_name: Postgres
     restart: always
     environment:
@@ -40,7 +41,7 @@ services:
       - app-network
 
   cache:
-    image: redis:7.4
+    image: redis:7.4.2
     container_name: Redis
     restart: always
     command: redis-server --requirepass redis-password
@@ -51,9 +52,25 @@ services:
     networks:
       - app-network
 
+  kafka:
+    image: apache/kafka:4.0.0
+    container_name: Kafka
+    ports:
+      - '9092:9092'
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+      - kafka-config:/mnt/shared/config
+      - kafka-secrets:/etc/kafka/secrets
+    networks:
+      - app-network
+
+
 volumes:
   db-data:
   cache-data:
+  kafka-data:
+  kafka-config:
+  kafka-secrets:
 
 networks:
   app-network:

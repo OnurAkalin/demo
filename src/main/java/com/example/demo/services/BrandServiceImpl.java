@@ -29,7 +29,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Cacheable(value = CacheConstants.BRANDS, key = "#id")
     @Override
-    public DataResult<GetBrandDetailsResponse> getById(int id) {
+    public DataResult<GetBrandDetailsResponse> getById(Long id) {
         Brand brand = brandRepository.findById(id).orElse(null);
         if (brand == null) {
             return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
@@ -77,7 +77,7 @@ public class BrandServiceImpl implements BrandService {
 
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
     @Override
-    public Result delete(int id) {
+    public Result delete(Long id) {
         Brand brand = brandRepository.findById(id).orElse(null);
         if (brand == null) {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);

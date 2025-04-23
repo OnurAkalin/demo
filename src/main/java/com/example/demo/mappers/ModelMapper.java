@@ -19,6 +19,7 @@ public interface ModelMapper {
 
     GetModelDetailsResponse toDetailsDto(Model model);
 
+    @Mapping(source = "brand.id", target = "brandId")
     GetModelResponse toDto(Model model);
 
     List<GetModelResponse> toDtoList(List<Model> models);

@@ -1,12 +1,13 @@
 package com.example.demo.controllers;
 
-import com.example.demo.services.ModelService;
 import com.example.demo.dtos.requests.CreateModelRequest;
 import com.example.demo.dtos.requests.UpdateModelRequest;
 import com.example.demo.dtos.responses.GetModelDetailsResponse;
 import com.example.demo.dtos.responses.GetModelResponse;
+import com.example.demo.services.ModelService;
 import com.example.demo.utils.result.DataResult;
 import com.example.demo.utils.result.Result;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ModelsController {
     private final ModelService modelService;
 
     @GetMapping(path = "/get/{id}")
-    public ResponseEntity<DataResult<GetModelDetailsResponse>> getById(@PathVariable int id) {
+    public ResponseEntity<DataResult<GetModelDetailsResponse>> getById(@PathVariable Long id) {
         return ResponseEntity.ok(modelService.getById(id));
     }
 
@@ -30,17 +31,17 @@ public class ModelsController {
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<Result> add(@RequestBody CreateModelRequest createModelRequest) {
+    public ResponseEntity<Result> add(@RequestBody @Valid CreateModelRequest createModelRequest) {
         return ResponseEntity.ok(modelService.add(createModelRequest));
     }
 
     @PostMapping(path = "/update")
-    public ResponseEntity<Result> update(@RequestBody UpdateModelRequest updateModelRequest) {
+    public ResponseEntity<Result> update(@RequestBody @Valid UpdateModelRequest updateModelRequest) {
         return ResponseEntity.ok(modelService.update(updateModelRequest));
     }
 
     @PostMapping(path = "/delete/{id}")
-    public ResponseEntity<Result> delete(@PathVariable int id) {
+    public ResponseEntity<Result> delete(@PathVariable Long id) {
         return ResponseEntity.ok(modelService.delete(id));
     }
 }
