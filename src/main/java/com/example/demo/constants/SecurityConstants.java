@@ -13,4 +13,5 @@ public final class SecurityConstants {
             "/v3/api-docs/**",
             "/auth/**"
     };
+    public static final String USER = "USER";
 }

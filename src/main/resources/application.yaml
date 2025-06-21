@@ -37,15 +37,6 @@ jwt:
   secret: 5fUMMBJZGfhmB84kZF3vJyvCqNjJkMDNeqXH26LQn4SYA6YQ3Ct6ZmKF8vdhsK3V
   expiration: 86400000  # 24H
 
-#Management
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics
-    access:
-      default: unrestricted
-
 #Logging
 logging:
   level:

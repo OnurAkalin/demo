@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.constants.UIMessages;
 import com.example.demo.dtos.requests.AuthRequest;
 import com.example.demo.dtos.requests.RegisterRequest;
 import com.example.demo.dtos.responses.AuthResponse;
@@ -40,24 +41,23 @@ public class AuthServiceImpl implements AuthService {
             final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
             final String token = jwtService.generateToken(userDetails);
 
-            return new SuccessDataResult<>(new AuthResponse(token), "Login successful");
+            return new SuccessDataResult<>(new AuthResponse(token), UIMessages.LOGIN_SUCCESS);
         } catch (BadCredentialsException e) {
-            return new ErrorDataResult<>(null, "Invalid username or password");
+            return new ErrorDataResult<>(null, UIMessages.LOGIN_FAILURE);
         }
     }
 
     @Override
     public Result register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            return new ErrorResult("This username is already in use");
+            return new ErrorResult(UIMessages.USED_USERNAME);
         }
 
         User user = userMapper.registerRequestToUser(request);
-
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
 
-        return new SuccessResult("User registered successfully");
+        return new SuccessResult(UIMessages.SUCCESS);
     }
 }

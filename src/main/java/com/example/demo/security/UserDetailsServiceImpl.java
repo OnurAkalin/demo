@@ -1,5 +1,7 @@
 package com.example.demo.security;
 
+import com.example.demo.constants.SecurityConstants;
+import com.example.demo.constants.UIMessages;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(UIMessages.USER_NOT_FOUND + username));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("USER"))
+                Collections.singletonList(new SimpleGrantedAuthority(SecurityConstants.USER))
         );
     }
 }
