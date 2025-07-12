@@ -19,4 +19,6 @@ public interface ModelService {
     Result update(UpdateModelRequest updateModelRequest);
 
     Result delete(Long id);
+
+    void deleteAll();
 }

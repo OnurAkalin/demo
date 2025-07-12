@@ -19,4 +19,6 @@ public interface BrandService {
     Result update(UpdateBrandRequest updateBrandRequest);
 
     Result delete(Long id);
+
+    void deleteAll();
 }

@@ -101,4 +101,10 @@ public class ModelServiceImpl implements ModelService {
 
         return new SuccessResult(UIMessages.SUCCESS);
     }
+
+    @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
+    @Override
+    public void deleteAll() {
+        modelRepository.deleteAll();
+    }
 }

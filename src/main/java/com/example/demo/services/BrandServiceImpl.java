@@ -87,4 +87,10 @@ public class BrandServiceImpl implements BrandService {
 
         return new SuccessResult(UIMessages.SUCCESS);
     }
+
+    @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Override
+    public void deleteAll() {
+        brandRepository.deleteAll();
+    }
 }

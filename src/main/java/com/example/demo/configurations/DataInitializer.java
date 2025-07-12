@@ -5,11 +5,13 @@ import com.example.demo.entities.Model;
 import com.example.demo.repositories.BrandRepository;
 import com.example.demo.repositories.ModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
@@ -58,5 +60,6 @@ public class DataInitializer implements CommandLineRunner {
         a6.setBrand(audi);
 
         modelRepository.saveAll(List.of(bmw3, bmw4, bmw5, a4, a6));
+        log.info("Brands and Models initialized");
     }
 }
