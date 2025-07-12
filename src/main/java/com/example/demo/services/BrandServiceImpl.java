@@ -43,10 +43,9 @@ public class BrandServiceImpl implements BrandService {
     @Cacheable(value = CacheConstants.BRANDS, key = CacheConstants.ALL_KEY)
     @Override
     public DataResult<List<GetBrandResponse>> getAll() {
-        List<GetBrandResponse> response;
-        var brands = brandRepository.findAll();
+        List<Brand> brands = brandRepository.findAll();
 
-        response = brandMapper.toDtoList(brands);
+        List<GetBrandResponse> response = brandMapper.toDtoList(brands);
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }

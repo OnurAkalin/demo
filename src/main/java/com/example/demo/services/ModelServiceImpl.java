@@ -1,16 +1,16 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.Brand;
-import com.example.demo.entities.Model;
-import com.example.demo.repositories.BrandRepository;
-import com.example.demo.repositories.ModelRepository;
-import com.example.demo.mappers.ModelMapper;
+import com.example.demo.constants.CacheConstants;
+import com.example.demo.constants.UIMessages;
 import com.example.demo.dtos.requests.CreateModelRequest;
 import com.example.demo.dtos.requests.UpdateModelRequest;
 import com.example.demo.dtos.responses.GetModelDetailsResponse;
 import com.example.demo.dtos.responses.GetModelResponse;
-import com.example.demo.constants.CacheConstants;
-import com.example.demo.constants.UIMessages;
+import com.example.demo.entities.Brand;
+import com.example.demo.entities.Model;
+import com.example.demo.mappers.ModelMapper;
+import com.example.demo.repositories.BrandRepository;
+import com.example.demo.repositories.ModelRepository;
 import com.example.demo.utils.result.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -46,10 +46,9 @@ public class ModelServiceImpl implements ModelService {
     @Cacheable(value = CacheConstants.MODELS, key = CacheConstants.ALL_KEY)
     @Override
     public DataResult<List<GetModelResponse>> getAll() {
-        List<GetModelResponse> response;
         List<Model> models = modelRepository.findAll();
 
-        response = modelMapper.toDtoList(models);
+        List<GetModelResponse> response = modelMapper.toDtoList(models);
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
@@ -77,13 +76,7 @@ public class ModelServiceImpl implements ModelService {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);
         }
 
-        Brand brand = brandRepository.findById(updateModelRequest.getBrandId()).orElse(null);
-        if (brand == null) {
-            return new ErrorResult(UIMessages.ERROR);
-        }
-
         modelMapper.toEntity(updateModelRequest, model);
-        model.setBrand(brand);
         modelRepository.save(model);
 
         return new SuccessResult(UIMessages.SUCCESS);
