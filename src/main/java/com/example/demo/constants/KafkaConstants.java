@@ -5,5 +5,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KafkaConstants {
-    public static final String TOPIC = "my-topic";
+    public static final String DATABASE_TOPIC = "database-topic";
+    public static final String DATABASE_GROUP = "database-group";
 }

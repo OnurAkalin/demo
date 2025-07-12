@@ -16,7 +16,7 @@ public class KafkaConsumerService {
     private final BrandService brandService;
     private final ModelService modelService;
 
-    @KafkaListener(topics = KafkaConstants.TOPIC, groupId = "my-group")
+    @KafkaListener(topics = KafkaConstants.DATABASE_TOPIC, groupId = KafkaConstants.DATABASE_GROUP)
     public void listen(String message) {
 
         if (message.equals("brands")) {

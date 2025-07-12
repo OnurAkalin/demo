@@ -11,7 +11,8 @@ public final class SecurityConstants {
             "/swagger-ui/**",
             "/swagger/**",
             "/v3/api-docs/**",
-            "/auth/**"
+            "/auth/**",
+            "/api/**" // tüm isteklere login olmadan izin verilir.
     };
     public static final String USER = "USER";
 }
