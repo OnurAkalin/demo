@@ -20,6 +20,7 @@ public class KafkaController {
     @PostMapping("/clearDatabase")
     public ResponseEntity<Result> sendMessage(@RequestParam String message) {
         kafkaProducerService.sendMessage(message);
+
         return ResponseEntity.ok(new SuccessResult(UIMessages.SUCCESS));
     }
 }

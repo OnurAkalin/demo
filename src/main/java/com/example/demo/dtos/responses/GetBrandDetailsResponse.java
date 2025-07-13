@@ -1,12 +1,18 @@
 package com.example.demo.dtos.responses;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetBrandDetailsResponse {
+    List<GetModelResponse> models;
     private Long id;
     private String name;
-    List<GetModelResponse> models;
 }

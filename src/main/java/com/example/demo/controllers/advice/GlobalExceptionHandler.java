@@ -22,8 +22,23 @@ import java.util.Map;
 @ControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Result> exception(HttpServletRequest request, HandlerMethod handlerMethod, Exception e) {
-        log.error("Exception occurred at\n URL: {}\n Method: {}\n Controller: {}\n Method: {}", request.getRequestURL(), request.getMethod(), handlerMethod.getBeanType().getSimpleName(), handlerMethod.getMethod().getName(), e);
+    public ResponseEntity<Result> exception(HttpServletRequest request, HandlerMethod handlerMethod, Exception exception) {
+        log.error("""
+                        Exception occurred at
+                         \
+                        URL: {}
+                         \
+                        Method: {}
+                         \
+                        Controller: {}
+                         \
+                        Method: {}
+                  """,
+                request.getRequestURL(),
+                request.getMethod(),
+                handlerMethod.getBeanType().getSimpleName(),
+                handlerMethod.getMethod().getName(),
+                exception);
 
         return ResponseEntity.ok(new ErrorResult(UIMessages.UNKNOWN_ERROR));
     }

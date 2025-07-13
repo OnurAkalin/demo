@@ -1,11 +1,15 @@
 package com.example.demo.dtos.responses;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.io.Serializable;
-
-@Data
-public class GetBrandResponse implements Serializable {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class GetBrandResponse {
     private Long id;
     private String name;
 }

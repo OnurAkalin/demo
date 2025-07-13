@@ -2,9 +2,9 @@ package com.example.demo.controllers;
 
 import com.example.demo.dtos.requests.AuthRequest;
 import com.example.demo.dtos.requests.RegisterRequest;
+import com.example.demo.dtos.responses.AuthResponse;
 import com.example.demo.services.AuthService;
 import com.example.demo.utils.result.DataResult;
-import com.example.demo.dtos.responses.AuthResponse;
 import com.example.demo.utils.result.Result;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
