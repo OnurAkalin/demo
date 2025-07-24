@@ -62,7 +62,6 @@ public class ModelServiceImpl implements ModelService {
         }
 
         Model model = modelMapper.toEntity(createModelRequest);
-        model.setBrand(brand);
         modelRepository.save(model);
 
         return new SuccessResult(UIMessages.SUCCESS);

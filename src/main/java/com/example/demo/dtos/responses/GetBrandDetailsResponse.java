@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetBrandDetailsResponse {
-    List<GetModelResponse> models;
     private Long id;
     private String name;
+    List<GetModelResponse> models;
 }
