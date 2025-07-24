@@ -19,12 +19,20 @@ public class KafkaConsumerService {
     @KafkaListener(topics = KafkaConstants.DATABASE_TOPIC, groupId = KafkaConstants.DATABASE_GROUP)
     public void listen(String message) {
 
-        if (message.equals("brands")) {
-            brandService.deleteAll();
-            log.info("Deleted all brands");
-        } else if (message.equals("models")) {
-            modelService.deleteAll();
-            log.info("Deleted all models");
+        switch (message) {
+            case "brands" -> {
+                brandService.deleteAll();
+                log.info("All brands deleted");
+            }
+            case "models" -> {
+                modelService.deleteAll();
+                log.info("All models deleted");
+            }
+            case "all" -> {
+                brandService.deleteAll();
+                modelService.deleteAll();
+                log.info("All tables deleted");
+            }
         }
     }
 }
