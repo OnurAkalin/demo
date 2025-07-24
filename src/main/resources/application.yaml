@@ -35,7 +35,7 @@ spring:
 #JWT
 jwt:
   secret: 5fUMMBJZGfhmB84kZF3vJyvCqNjJkMDNeqXH26LQn4SYA6YQ3Ct6ZmKF8vdhsK3V
-  expiration: 86400000  # 24H
+  expiration: 3600000  # 1H
 
 #Logging
 logging:
