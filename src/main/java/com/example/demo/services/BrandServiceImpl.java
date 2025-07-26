@@ -74,7 +74,7 @@ public class BrandServiceImpl implements BrandService {
         return new SuccessResult(UIMessages.SUCCESS);
     }
 
-    @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
     public Result delete(Long id) {
         Brand brand = brandRepository.findById(id).orElse(null);
