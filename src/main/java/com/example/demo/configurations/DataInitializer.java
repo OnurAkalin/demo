@@ -59,7 +59,7 @@ public class DataInitializer implements CommandLineRunner {
         a6.setName("A6");
         a6.setBrand(audi);
 
-        modelRepository.saveAll(List.of(bmw3, bmw4, bmw5, a4, a6));
+        modelRepository.saveAll(List.of(bmw3, bmw4, bmw5, a4, a5, a6));
         log.info("Brands and Models initialized");
     }
 }
