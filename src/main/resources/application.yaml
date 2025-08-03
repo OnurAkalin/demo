@@ -9,6 +9,13 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
   main:
     allow-circular-references: true
   datasource:
