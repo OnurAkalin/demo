@@ -1,11 +1,13 @@
 package com.example.demo.services;
 
+import com.example.demo.constants.AppConstants;
 import com.example.demo.constants.CacheConstants;
 import com.example.demo.constants.UIMessages;
 import com.example.demo.dtos.requests.CreateModelRequest;
 import com.example.demo.dtos.requests.UpdateModelRequest;
 import com.example.demo.dtos.responses.GetModelDetailsResponse;
 import com.example.demo.dtos.responses.GetModelResponse;
+import com.example.demo.dtos.responses.PagedResponse;
 import com.example.demo.entities.Brand;
 import com.example.demo.entities.Model;
 import com.example.demo.mappers.ModelMapper;
@@ -15,6 +17,8 @@ import com.example.demo.utils.result.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +52,25 @@ public class ModelServiceImpl implements ModelService {
         List<Model> models = modelRepository.findAll();
 
         List<GetModelResponse> response = modelMapper.toDtoList(models);
+
+        return new SuccessDataResult<>(response, UIMessages.SUCCESS);
+    }
+
+    @Override
+    public DataResult<PagedResponse<GetModelResponse>> getAllPaged(int pageNo) {
+        int pageIndex = Math.max(pageNo - 1, 0);
+        PageRequest pageRequest = PageRequest.of(pageIndex, AppConstants.MODELS_PAGE_SIZE);
+
+        Page<Model> models = modelRepository.findAll(pageRequest);
+
+        List<GetModelResponse> content = modelMapper.toDtoList(models.getContent());
+
+        PagedResponse<GetModelResponse> response = new PagedResponse<>(
+                content,
+                models.getNumber() + 1,
+                models.getSize(),
+                models.getTotalPages()
+        );
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }

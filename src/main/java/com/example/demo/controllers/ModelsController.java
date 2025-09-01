@@ -4,6 +4,7 @@ import com.example.demo.dtos.requests.CreateModelRequest;
 import com.example.demo.dtos.requests.UpdateModelRequest;
 import com.example.demo.dtos.responses.GetModelDetailsResponse;
 import com.example.demo.dtos.responses.GetModelResponse;
+import com.example.demo.dtos.responses.PagedResponse;
 import com.example.demo.services.ModelService;
 import com.example.demo.utils.result.DataResult;
 import com.example.demo.utils.result.Result;
@@ -28,6 +29,11 @@ public class ModelsController {
     @GetMapping(path = "/getAll")
     public ResponseEntity<DataResult<List<GetModelResponse>>> getAll() {
         return ResponseEntity.ok(modelService.getAll());
+    }
+
+    @GetMapping(path = "/getAll/{pageNo}")
+    public ResponseEntity<DataResult<PagedResponse<GetModelResponse>>> getAllPaged(@PathVariable int pageNo) {
+        return ResponseEntity.ok(modelService.getAllPaged(pageNo));
     }
 
     @PostMapping(path = "/add")
