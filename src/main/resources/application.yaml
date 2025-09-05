@@ -11,11 +11,12 @@ spring:
     open-in-view: true
     properties:
       hibernate:
+        order_inserts: true
+        order_updates: true
+        #generate_statistics: true
         jdbc:
           batch_size: 50
           batch_versioned_data: true
-        order_inserts: true
-        order_updates: true
   main:
     allow-circular-references: true
   datasource:
