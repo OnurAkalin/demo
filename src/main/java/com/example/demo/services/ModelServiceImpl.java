@@ -64,7 +64,12 @@ public class ModelServiceImpl implements ModelService {
 
         List<GetModelResponse> content = modelMapper.toDtoList(models.getContent());
 
-        PagedResponse<GetModelResponse> response = new PagedResponse<>(content, models.getNumber() + 1, models.getSize(), models.getTotalPages());
+        PagedResponse<GetModelResponse> response = new PagedResponse<>(
+                content,
+                models.getNumber() + 1,
+                models.getSize(),
+                models.getTotalPages()
+        );
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
