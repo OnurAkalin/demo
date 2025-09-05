@@ -19,6 +19,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,8 +59,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public DataResult<PagedResponse<GetModelResponse>> getAllPaged(int pageNo) {
-        int pageIndex = Math.max(pageNo - 1, 0);
-        PageRequest pageRequest = PageRequest.of(pageIndex, AppConstants.MODELS_PAGE_SIZE);
+        PageRequest pageRequest = PageRequest.of(Math.max(pageNo - 1, 0), AppConstants.MODELS_PAGE_SIZE);
 
         Page<Model> models = modelRepository.findAll(pageRequest);
 
