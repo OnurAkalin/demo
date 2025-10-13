@@ -7,4 +7,7 @@ import lombok.NoArgsConstructor;
 public final class KafkaConstants {
     public static final String DATABASE_TOPIC = "database-topic";
     public static final String DATABASE_GROUP = "database-group";
+
+    public static final String CACHE_TOPIC = "cache-topic";
+    public static final String CACHE_GROUP = "cache-group";
 }
