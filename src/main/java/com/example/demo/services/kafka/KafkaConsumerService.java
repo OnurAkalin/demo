@@ -6,11 +6,12 @@ import com.example.demo.services.BrandService;
 import com.example.demo.services.ModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,43 +21,53 @@ public class KafkaConsumerService {
     private final ModelService modelService;
     private final CacheManager cacheManager;
 
+    private static final String ALL = "all";
+    private static final String BRANDS = "brands";
+    private static final String MODELS = "models";
+
     @KafkaListener(topics = KafkaConstants.DATABASE_TOPIC, groupId = KafkaConstants.DATABASE_GROUP)
     public void clearDatabase(String message) {
-
         switch (message) {
-            case "brands" -> {
+            case BRANDS -> {
                 brandService.deleteAll();
-                log.info("All brands deleted");
+                log.info("All brands deleted from database");
             }
-            case "models" -> {
+            case MODELS -> {
                 modelService.deleteAll();
-                log.info("All models deleted");
+                log.info("All models deleted from database");
             }
-            case "all" -> {
+            case ALL -> {
                 brandService.deleteAll();
                 modelService.deleteAll();
-                log.info("All tables deleted");
+                log.info("All data deleted from database");
             }
+            default -> log.warn("Unknown database clear message: {}", message);
         }
     }
 
     @KafkaListener(topics = KafkaConstants.CACHE_TOPIC, groupId = KafkaConstants.CACHE_GROUP)
     public void clearCache(String message) {
-
         switch (message) {
-            case CacheConstants.BRANDS -> {
-                Objects.requireNonNull(cacheManager.getCache(CacheConstants.BRANDS)).clear();
-                log.info("All brands deleted from cache");
-            }
-            case CacheConstants.MODELS -> {
-                Objects.requireNonNull(cacheManager.getCache(CacheConstants.MODELS)).clear();
-                log.info("All models deleted from cache");
-            }
-            case "all" -> {
-                Objects.requireNonNull(cacheManager.getCache(CacheConstants.BRANDS)).clear();
-                Objects.requireNonNull(cacheManager.getCache(CacheConstants.MODELS)).clear();
-                log.info("All entries deleted from cache");
-            }
+            case CacheConstants.BRANDS -> clearSpecificCache(CacheConstants.BRANDS);
+            case CacheConstants.MODELS -> clearSpecificCache(CacheConstants.MODELS);
+            case ALL -> clearAllCaches();
+            default -> log.warn("Unknown cache clear message: {}", message);
         }
+    }
+
+    private void clearSpecificCache(String cacheName) {
+        Cache cache = cacheManager.getCache(cacheName);
+        if (cache != null) {
+            cache.clear();
+            log.info("Cache '{}' cleared", cacheName);
+        } else {
+            log.error("Cache '{}' not found", cacheName);
+        }
+    }
+
+    private void clearAllCaches() {
+        List<String> cacheNames = List.of(CacheConstants.BRANDS, CacheConstants.MODELS);
+        cacheNames.forEach(this::clearSpecificCache);
+        log.info("All caches cleared");
     }
 }
