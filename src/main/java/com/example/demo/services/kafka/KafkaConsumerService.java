@@ -11,8 +11,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -66,8 +64,7 @@ public class KafkaConsumerService {
     }
 
     private void clearAllCaches() {
-        List<String> cacheNames = List.of(CacheConstants.BRANDS, CacheConstants.MODELS);
-        cacheNames.forEach(this::clearSpecificCache);
+        cacheManager.getCacheNames().forEach(this::clearSpecificCache);
         log.info("All caches cleared");
     }
 }
