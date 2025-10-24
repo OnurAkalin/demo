@@ -79,26 +79,26 @@ public class DataInitializer implements CommandLineRunner {
     private List<Brand> createAndSaveBrands(Iterable<String> brandNames) {
         List<Brand> brands = new ArrayList<>();
         for (String brandName : brandNames) {
-            brands.add(Brand.builder().name(brandName).build());
+            Brand brand = new Brand();
+            brand.setName(brandName);
+            brands.add(brand);
         }
         return brandRepository.saveAll(brands);
     }
 
     private void createAndSaveModels(List<Brand> brands, Map<String, List<String>> brandModelMap) {
         List<Model> allModels = new ArrayList<>();
-
         for (Brand brand : brands) {
             List<String> modelNames = brandModelMap.get(brand.getName());
             if (modelNames != null) {
                 for (String modelName : modelNames) {
-                    allModels.add(Model.builder()
-                            .name(modelName)
-                            .brand(brand)
-                            .build());
+                    Model model = new Model();
+                    model.setName(modelName);
+                    model.setBrand(brand);
+                    allModels.add(model);
                 }
             }
         }
-
         modelRepository.saveAll(allModels);
     }
 }
