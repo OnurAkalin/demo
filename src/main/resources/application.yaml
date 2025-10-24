@@ -63,4 +63,6 @@ springdoc:
     enabled: true
     display-request-duration: true
     filter: true
+    operations-sorter: alpha
+    tags-sorter: alpha
     # use-root-path: true       #localhost:8080 üzerinden swagger açar
