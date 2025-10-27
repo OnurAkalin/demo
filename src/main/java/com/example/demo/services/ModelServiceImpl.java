@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.constants.AppConstants;
 import com.example.demo.constants.CacheConstants;
+import com.example.demo.constants.Status;
 import com.example.demo.constants.UIMessages;
 import com.example.demo.dtos.requests.CreateModelRequest;
 import com.example.demo.dtos.requests.UpdateModelRequest;
@@ -36,7 +37,7 @@ public class ModelServiceImpl implements ModelService {
     @Cacheable(value = CacheConstants.MODELS, key = "#id")
     @Override
     public DataResult<GetModelDetailsResponse> getById(Long id) {
-        Model model = modelRepository.findById(id).orElse(null);
+        Model model = modelRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (model == null) {
             return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
         }
@@ -49,7 +50,7 @@ public class ModelServiceImpl implements ModelService {
     @Cacheable(value = CacheConstants.MODELS, key = CacheConstants.ALL_KEY)
     @Override
     public DataResult<List<GetModelResponse>> getAll() {
-        List<Model> models = modelRepository.findAll();
+        List<Model> models = modelRepository.findAllByStatus(Status.ACTIVE);
 
         List<GetModelResponse> response = modelMapper.toDtoList(models);
 
@@ -60,16 +61,11 @@ public class ModelServiceImpl implements ModelService {
     public DataResult<PagedResponse<GetModelResponse>> getAllPaged(int pageNo) {
         PageRequest pageRequest = PageRequest.of(Math.max(pageNo - 1, 0), AppConstants.MODELS_PAGE_SIZE);
 
-        Page<Model> models = modelRepository.findAll(pageRequest);
+        Page<Model> models = modelRepository.findAllByStatus(Status.ACTIVE, pageRequest);
 
         List<GetModelResponse> content = modelMapper.toDtoList(models.getContent());
 
-        PagedResponse<GetModelResponse> response = new PagedResponse<>(
-                content,
-                models.getNumber() + 1,
-                models.getSize(),
-                models.getTotalPages()
-        );
+        PagedResponse<GetModelResponse> response = new PagedResponse<>(content, models.getNumber() + 1, models.getSize(), models.getTotalPages());
 
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
@@ -77,7 +73,7 @@ public class ModelServiceImpl implements ModelService {
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
     public Result add(CreateModelRequest createModelRequest) {
-        Brand brand = brandRepository.findById(createModelRequest.getBrandId()).orElse(null);
+        Brand brand = brandRepository.findByIdAndStatus(createModelRequest.getBrandId(), Status.ACTIVE);
         if (brand == null) {
             return new ErrorResult(UIMessages.ERROR);
         }
@@ -91,7 +87,7 @@ public class ModelServiceImpl implements ModelService {
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
     public Result update(UpdateModelRequest updateModelRequest) {
-        Model model = modelRepository.findById(updateModelRequest.getId()).orElse(null);
+        Model model = modelRepository.findByIdAndStatus(updateModelRequest.getId(), Status.ACTIVE);
         if (model == null) {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);
         }
@@ -105,19 +101,20 @@ public class ModelServiceImpl implements ModelService {
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
     public Result delete(Long id) {
-        Model model = modelRepository.findById(id).orElse(null);
+        Model model = modelRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (model == null) {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);
         }
 
-        modelRepository.delete(model);
+        model.setStatus(Status.DELETED);
+        modelRepository.save(model);
 
         return new SuccessResult(UIMessages.SUCCESS);
     }
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
-    public void deleteAll() {
+    public void hardDeleteAll() {
         modelRepository.deleteAll();
     }
 }

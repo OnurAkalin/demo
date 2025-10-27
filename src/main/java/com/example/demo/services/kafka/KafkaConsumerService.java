@@ -27,16 +27,16 @@ public class KafkaConsumerService {
     public void clearDatabase(String message) {
         switch (message) {
             case BRANDS -> {
-                brandService.deleteAll();
+                brandService.hardDeleteAll();
                 log.info("All brands deleted from database");
             }
             case MODELS -> {
-                modelService.deleteAll();
+                modelService.hardDeleteAll();
                 log.info("All models deleted from database");
             }
             case ALL -> {
-                brandService.deleteAll();
-                modelService.deleteAll();
+                brandService.hardDeleteAll();
+                modelService.hardDeleteAll();
                 log.info("All data deleted from database");
             }
             default -> log.warn("Unknown database clear message: {}", message);

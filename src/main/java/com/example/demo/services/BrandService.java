@@ -20,5 +20,5 @@ public interface BrandService {
 
     Result delete(Long id);
 
-    void deleteAll();
+    void hardDeleteAll();
 }

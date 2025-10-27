@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.constants.CacheConstants;
+import com.example.demo.constants.Status;
 import com.example.demo.constants.UIMessages;
 import com.example.demo.dtos.requests.CreateBrandRequest;
 import com.example.demo.dtos.requests.UpdateBrandRequest;
@@ -29,7 +30,7 @@ public class BrandServiceImpl implements BrandService {
     @Cacheable(value = CacheConstants.BRANDS, key = "#id")
     @Override
     public DataResult<GetBrandDetailsResponse> getById(Long id) {
-        Brand brand = brandRepository.findById(id).orElse(null);
+        Brand brand = brandRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (brand == null) {
             return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
         }
@@ -42,7 +43,7 @@ public class BrandServiceImpl implements BrandService {
     @Cacheable(value = CacheConstants.BRANDS, key = CacheConstants.ALL_KEY)
     @Override
     public DataResult<List<GetBrandResponse>> getAll() {
-        List<Brand> brands = brandRepository.findAll();
+        List<Brand> brands = brandRepository.findAllByStatus(Status.ACTIVE);
 
         List<GetBrandResponse> response = brandMapper.toDtoList(brands);
 
@@ -62,7 +63,7 @@ public class BrandServiceImpl implements BrandService {
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
     @Override
     public Result update(UpdateBrandRequest updateBrandRequest) {
-        Brand brand = brandRepository.findById(updateBrandRequest.getId()).orElse(null);
+        Brand brand = brandRepository.findByIdAndStatus(updateBrandRequest.getId(), Status.ACTIVE);
         if (brand == null) {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);
         }
@@ -76,19 +77,20 @@ public class BrandServiceImpl implements BrandService {
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
     @Override
     public Result delete(Long id) {
-        Brand brand = brandRepository.findById(id).orElse(null);
+        Brand brand = brandRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (brand == null) {
             return new ErrorResult(UIMessages.NOT_FOUND_DATA);
         }
 
-        brandRepository.delete(brand);
+        brand.setStatus(Status.DELETED);
+        brandRepository.save(brand);
 
         return new SuccessResult(UIMessages.SUCCESS);
     }
 
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
     @Override
-    public void deleteAll() {
+    public void hardDeleteAll() {
         brandRepository.deleteAll();
     }
 }

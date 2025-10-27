@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateBrandRequest {
-    @Size(min = 2, max = 20, message = "Brand name must be between 2 and 20 characters")
     @NotBlank(message = "Brand name cannot be empty")
+    @Size(min = 2, max = 50, message = "Brand name must be between 2 and 50 characters")
     private String name;
 }

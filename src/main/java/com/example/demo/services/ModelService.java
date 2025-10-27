@@ -23,5 +23,5 @@ public interface ModelService {
 
     Result delete(Long id);
 
-    void deleteAll();
+    void hardDeleteAll();
 }
