@@ -1,4 +1,4 @@
-package com.example.demo.configurations;
+package com.example.demo.config;
 
 import com.example.demo.constants.SecurityConstants;
 import com.example.demo.security.JwtAuthFilter;

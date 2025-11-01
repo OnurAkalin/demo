@@ -1,4 +1,4 @@
-package com.example.demo.converters;
+package com.example.demo.entities.converters;
 
 import com.example.demo.constants.Status;
 import jakarta.persistence.AttributeConverter;

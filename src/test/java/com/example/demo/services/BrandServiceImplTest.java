@@ -7,6 +7,7 @@ import com.example.demo.dtos.responses.GetBrandResponse;
 import com.example.demo.entities.Brand;
 import com.example.demo.mappers.BrandMapper;
 import com.example.demo.repositories.BrandRepository;
+import com.example.demo.services.impl.BrandServiceImpl;
 import com.example.demo.utils.result.DataResult;
 import com.example.demo.utils.result.Result;
 import org.junit.jupiter.api.BeforeEach;

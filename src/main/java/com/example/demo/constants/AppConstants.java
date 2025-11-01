@@ -4,6 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AppConstants {
+public final class AppConstants {
     public final static int MODELS_PAGE_SIZE = 5;
 }

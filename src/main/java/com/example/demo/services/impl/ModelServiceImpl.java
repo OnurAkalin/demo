@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.constants.AppConstants;
 import com.example.demo.constants.CacheConstants;
@@ -14,6 +14,7 @@ import com.example.demo.entities.Model;
 import com.example.demo.mappers.ModelMapper;
 import com.example.demo.repositories.BrandRepository;
 import com.example.demo.repositories.ModelRepository;
+import com.example.demo.services.ModelService;
 import com.example.demo.utils.result.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

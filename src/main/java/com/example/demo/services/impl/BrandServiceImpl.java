@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.constants.CacheConstants;
 import com.example.demo.constants.Status;
@@ -10,6 +10,7 @@ import com.example.demo.dtos.responses.GetBrandResponse;
 import com.example.demo.entities.Brand;
 import com.example.demo.mappers.BrandMapper;
 import com.example.demo.repositories.BrandRepository;
+import com.example.demo.services.BrandService;
 import com.example.demo.utils.result.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

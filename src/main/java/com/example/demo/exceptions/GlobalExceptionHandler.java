@@ -1,4 +1,4 @@
-package com.example.demo.controllers.advice;
+package com.example.demo.exceptions;
 
 import com.example.demo.constants.UIMessages;
 import com.example.demo.utils.result.ErrorResult;

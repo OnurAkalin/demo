@@ -1,4 +1,4 @@
-package com.example.demo.configurations;
+package com.example.demo.config;
 
 import com.example.demo.constants.CacheConstants;
 import org.springframework.cache.CacheManager;

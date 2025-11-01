@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.constants.UIMessages;
 import com.example.demo.dtos.requests.AuthRequest;
@@ -8,6 +8,7 @@ import com.example.demo.entities.User;
 import com.example.demo.mappers.UserMapper;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtService;
+import com.example.demo.services.AuthService;
 import com.example.demo.utils.result.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

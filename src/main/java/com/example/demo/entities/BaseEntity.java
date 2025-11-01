@@ -1,7 +1,7 @@
 package com.example.demo.entities;
 
 import com.example.demo.constants.Status;
-import com.example.demo.converters.StatusConverter;
+import com.example.demo.entities.converters.StatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

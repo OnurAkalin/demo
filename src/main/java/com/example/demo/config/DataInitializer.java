@@ -1,4 +1,4 @@
-package com.example.demo.configurations;
+package com.example.demo.config;
 
 import com.example.demo.entities.Brand;
 import com.example.demo.entities.Model;
