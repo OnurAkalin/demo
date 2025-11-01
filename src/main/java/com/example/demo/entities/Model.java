@@ -23,7 +23,7 @@ public class Model extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(
             name = "brand_id",
             nullable = false,
