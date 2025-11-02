@@ -49,12 +49,12 @@ jwt:
 logging:
   level:
     root: info
-#  file:
-#    name: logs/app.log
-#  logback:
-#    rollingpolicy:
-#      max-file-size: 1KB
-#      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+  file:
+    name: logs/app.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
 
 #Swagger
 springdoc:
