@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Result> handleTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        String errorMessage = String.format("Invalid value for parameter '%s'.", ex.getName());
+        String errorMessage = String.format("Invalid value for parameter '%s'", ex.getName());
         return ResponseEntity.badRequest().body(new ErrorResult(errorMessage));
     }
 }
