@@ -24,28 +24,17 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI().info(apiInfo()).servers(serverList());
+        return new OpenAPI()
+                .info(apiInfo())
+                .servers(serverList());
     }
 
     private Info apiInfo() {
-        return new Info().title(applicationName + " API").version(version).description(description + """
-                
-                ## 🚗 Features
-                - Brand Management
-                - Model Management
-                - Authentication & Authorization
-                - Redis Caching
-                - Kafka Integration
-                
-                ## 📝 Authentication
-                Most endpoints require JWT authentication.
-                Use the `/api/auth/login` endpoint to obtain a token.
-                
-                """).license(apiLicense());
-    }
-
-    private License apiLicense() {
-        return new License().name("Onur Akalın").url("https://github.com/OnurAkalin");
+        return new Info()
+                .title(applicationName + " API")
+                .version(version)
+                .description(description)
+                .license(new License().name("Onur Akalın").url("https://github.com/OnurAkalin"));
     }
 
     private List<Server> serverList() {
