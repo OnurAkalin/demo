@@ -42,7 +42,7 @@ services:
       - app-network
 
   cache:
-    image: redis:8.2.2
+    image: redis:8.2.3
     container_name: Redis
     restart: always
     command: redis-server --requirepass redis-password
