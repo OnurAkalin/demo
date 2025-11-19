@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@AllArgsConstructor
 public enum Status {
     ACTIVE(1),
-    PASSIVE(2),
-    DELETED(3);
+    DELETED(2);
 
     private final int code;
 }
