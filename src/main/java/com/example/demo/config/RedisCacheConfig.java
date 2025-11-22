@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.constants.CacheConstants;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,9 @@ import java.util.Map;
 @Configuration
 @EnableCaching
 public class RedisCacheConfig {
+
+    @Value("${app.cache-prefix:demo:}")
+    private String cachePrefix;
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
@@ -45,7 +49,8 @@ public class RedisCacheConfig {
                 )
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())
-                );
+                )
+                .prefixCacheNameWith(cachePrefix);
     }
 
     private RedisCacheConfiguration createCacheConfiguration(int durationInMinutes) {
