@@ -7,11 +7,15 @@ import com.example.demo.dtos.responses.GetBrandResponse;
 import com.example.demo.entities.Brand;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = ModelMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = ModelMapper.class,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface BrandMapper {
     Brand toEntity(CreateBrandRequest createBrandRequest);
 

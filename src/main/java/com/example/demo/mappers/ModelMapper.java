@@ -5,14 +5,14 @@ import com.example.demo.dtos.requests.UpdateModelRequest;
 import com.example.demo.dtos.responses.GetModelDetailsResponse;
 import com.example.demo.dtos.responses.GetModelResponse;
 import com.example.demo.entities.Model;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = BrandMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",
+        uses = BrandMapper.class,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ModelMapper {
     @Mapping(source = "brandId", target = "brand.id")
     Model toEntity(CreateModelRequest createModelRequest);
