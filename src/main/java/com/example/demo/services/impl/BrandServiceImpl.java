@@ -84,6 +84,7 @@ public class BrandServiceImpl implements BrandService {
         }
 
         brand.setStatus(Status.DELETED);
+        brandRepository.softDeleteModelsByBrandId(id);
         brandRepository.save(brand);
 
         return new SuccessResult(UIMessages.SUCCESS);
