@@ -13,10 +13,8 @@ spring:
       hibernate:
         order_inserts: true
         order_updates: true
-        #generate_statistics: true
         jdbc:
           batch_size: 50
-          batch_versioned_data: true
   main:
     allow-circular-references: true
     allow-bean-definition-overriding: true
