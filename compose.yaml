@@ -1,27 +1,27 @@
 services:
 
-  # Uygulamayı docker üzerinde kaldırmak için commenti kaldır
-  #  app:
-  #    container_name: SpringApp
-  #    build: .
-  #    image: demo-app:1.0 # build ile oluşan image'i 1.0 olarak tagler
-  #    pull_policy: never # docker hub üzerinde bu tag var mı diye kontrol etmemesi için komut
-  #    ports:
-  #      - "8080:8080"
-  #      - "5005:5005" # Debug portu *ekstra
-  #    environment:
-  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/Demo
-  #      - SPRING_DATASOURCE_USERNAME=postgres
-  #      - SPRING_DATASOURCE_PASSWORD=test
-  #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-  #      - SPRING_DATA_REDIS_HOST=cache
-  #      - TZ=Europe/Istanbul
-  #    depends_on:
-  #      - db
-  #      - cache
-  #      - kafka
-  #    networks:
-  #      - app-network
+# Uygulamayı docker üzerinde kaldırmak için commenti kaldır
+#  app:
+#    container_name: SpringApp
+#    build: .
+#    image: demo-app:1.0 # build ile oluşan image'i 1.0 olarak tagler
+#    pull_policy: never # docker hub üzerinde bu tag var mı diye kontrol etmemesi için komut
+#    ports:
+#      - "8080:8080"
+#      - "5005:5005" # Debug portu *ekstra
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/Demo
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=test
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#      - SPRING_DATA_REDIS_HOST=cache
+#      - TZ=Europe/Istanbul
+#    depends_on:
+#      - db
+#      - cache
+#      - kafka
+#    networks:
+#      - app-network
 
   db:
     image: postgres:18.0
