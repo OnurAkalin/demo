@@ -47,6 +47,7 @@ jwt:
 #Logging
 logging:
   level:
+    org.apache.kafka: warn
     root: info
 #  file:
 #    name: logs/app.log
