@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class DemoJobs {
     private final KafkaProducerService kafkaProducer;
 
-    @Scheduled(fixedRateString = "1h", initialDelayString = "30s")
+    @Scheduled(fixedRateString = "1h", initialDelayString = "30d")
     public void jobClearCache() {
         kafkaProducer.sendMessage("all", KafkaConstants.CACHE_TOPIC);
     }

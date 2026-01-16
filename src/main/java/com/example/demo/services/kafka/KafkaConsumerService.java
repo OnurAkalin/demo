@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +25,7 @@ public class KafkaConsumerService {
     private static final String MODELS = "models";
 
     @KafkaListener(topics = KafkaConstants.DATABASE_TOPIC, groupId = KafkaConstants.DATABASE_GROUP)
-    public void clearDatabase(String message) {
+    public void clearDatabase(String message, Acknowledgment ack) {
         switch (message) {
             case BRANDS -> {
                 brandService.hardDeleteAll();
@@ -41,16 +42,20 @@ public class KafkaConsumerService {
             }
             default -> log.warn("Unknown database clear message: {}", message);
         }
+
+        ack.acknowledge();
     }
 
     @KafkaListener(topics = KafkaConstants.CACHE_TOPIC, groupId = KafkaConstants.CACHE_GROUP)
-    public void clearCache(String message) {
+    public void clearCache(String message, Acknowledgment ack) {
         switch (message) {
             case CacheConstants.BRANDS -> clearSpecificCache(CacheConstants.BRANDS);
             case CacheConstants.MODELS -> clearSpecificCache(CacheConstants.MODELS);
             case ALL -> clearAllCaches();
             default -> log.warn("Unknown cache clear message: {}", message);
         }
+
+        ack.acknowledge();
     }
 
     private void clearSpecificCache(String cacheName) {
