@@ -6,7 +6,6 @@ import com.example.demo.services.kafka.KafkaProducerService;
 import com.example.demo.utils.result.Result;
 import com.example.demo.utils.result.SuccessResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,16 +18,16 @@ public class KafkaController {
     private final KafkaProducerService kafkaProducerService;
 
     @PostMapping("/clearDatabase")
-    public ResponseEntity<Result> sendMessage(@RequestParam String message) {
+    public Result clearDatabase(@RequestParam String message) {
         kafkaProducerService.sendMessage(message, KafkaConstants.DATABASE_TOPIC);
 
-        return ResponseEntity.ok(new SuccessResult(UIMessages.SUCCESS));
+        return new SuccessResult(UIMessages.SUCCESS);
     }
 
     @PostMapping("/clearCache")
-    public ResponseEntity<Result> clearCache(@RequestParam String message) {
+    public Result clearCache(@RequestParam String message) {
         kafkaProducerService.sendMessage(message, KafkaConstants.CACHE_TOPIC);
 
-        return ResponseEntity.ok(new SuccessResult(UIMessages.SUCCESS));
+        return new SuccessResult(UIMessages.SUCCESS);
     }
 }

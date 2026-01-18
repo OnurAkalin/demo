@@ -10,7 +10,6 @@ import com.example.demo.utils.result.DataResult;
 import com.example.demo.utils.result.Result;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,32 +21,32 @@ public class ModelsController {
     private final ModelService modelService;
 
     @GetMapping(path = "/get/{id}")
-    public ResponseEntity<DataResult<GetModelDetailsResponse>> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(modelService.getById(id));
+    public DataResult<GetModelDetailsResponse> getById(@PathVariable Long id) {
+        return modelService.getById(id);
     }
 
     @GetMapping(path = "/getAll")
-    public ResponseEntity<DataResult<List<GetModelResponse>>> getAll() {
-        return ResponseEntity.ok(modelService.getAll());
+    public DataResult<List<GetModelResponse>> getAll() {
+        return modelService.getAll();
     }
 
     @GetMapping(path = "/getAll/{pageNo}")
-    public ResponseEntity<DataResult<PagedResponse<GetModelResponse>>> getAllPaged(@PathVariable int pageNo) {
-        return ResponseEntity.ok(modelService.getAllPaged(pageNo));
+    public DataResult<PagedResponse<GetModelResponse>> getAllPaged(@PathVariable int pageNo) {
+        return modelService.getAllPaged(pageNo);
     }
 
     @PostMapping(path = "/add")
-    public ResponseEntity<Result> add(@RequestBody @Valid CreateModelRequest createModelRequest) {
-        return ResponseEntity.ok(modelService.add(createModelRequest));
+    public Result add(@RequestBody @Valid CreateModelRequest createModelRequest) {
+        return modelService.add(createModelRequest);
     }
 
     @PostMapping(path = "/update")
-    public ResponseEntity<Result> update(@RequestBody @Valid UpdateModelRequest updateModelRequest) {
-        return ResponseEntity.ok(modelService.update(updateModelRequest));
+    public Result update(@RequestBody @Valid UpdateModelRequest updateModelRequest) {
+        return modelService.update(updateModelRequest);
     }
 
     @PostMapping(path = "/delete/{id}")
-    public ResponseEntity<Result> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(modelService.delete(id));
+    public Result delete(@PathVariable Long id) {
+        return modelService.delete(id);
     }
 }
