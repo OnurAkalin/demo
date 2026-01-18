@@ -11,14 +11,18 @@ import com.example.demo.security.JwtService;
 import com.example.demo.services.AuthService;
 import com.example.demo.utils.result.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -43,22 +47,23 @@ public class AuthServiceImpl implements AuthService {
             final String token = jwtService.generateToken(userDetails);
 
             return new SuccessDataResult<>(new AuthResponse(token), UIMessages.LOGIN_SUCCESS);
-        } catch (BadCredentialsException e) {
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
             return new ErrorDataResult<>(null, UIMessages.LOGIN_FAILURE);
         }
     }
 
     @Override
     public Result register(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return new ErrorResult(UIMessages.USED_USERNAME);
+        try {
+            User user = userMapper.registerRequestToUser(request);
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+            userRepository.saveAndFlush(user);
+
+            return new SuccessResult(UIMessages.SUCCESS);
+        } catch (DataIntegrityViolationException e) {
+            log.warn("Username is already in use: {}", request.getUsername());
+            return new ErrorResult(UIMessages.ERROR);
         }
-
-        User user = userMapper.registerRequestToUser(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        userRepository.save(user);
-
-        return new SuccessResult(UIMessages.SUCCESS);
     }
 }
