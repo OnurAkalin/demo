@@ -43,8 +43,8 @@ spring:
 
 #JWT
 jwt:
-  secret: 5fUMMBJZGfhmB84kZF3vJyvCqNjJkMDNeqXH26LQn4SYA6YQ3Ct6ZmKF8vdhsK3V
-  expiration: 3600000  # 1H
+  secret: KWp1IEiwQNyQSnrZnjTmQMRtcrMtiEJT2HqFIBT0+9/Zn+bEfICHjwb8pvIqnCfloLKtJ5R5+0v7KPhGxnf9UQ==
+  expiration-ms: 3600000  # 1H
 
 #Logging
 logging:
