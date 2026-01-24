@@ -35,6 +35,7 @@ public class ModelServiceImpl implements ModelService {
     private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional(readOnly = true)
     @Cacheable(value = CacheConstants.MODELS, key = "#id")
     @Override
     public DataResult<GetModelDetailsResponse> getById(Long id) {
@@ -48,6 +49,7 @@ public class ModelServiceImpl implements ModelService {
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = CacheConstants.MODELS, key = CacheConstants.ALL_KEY)
     @Override
     public DataResult<List<GetModelResponse>> getAll() {

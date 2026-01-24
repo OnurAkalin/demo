@@ -28,6 +28,7 @@ public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
 
+    @Transactional(readOnly = true)
     @Cacheable(value = CacheConstants.BRANDS, key = "#id")
     @Override
     public DataResult<GetBrandDetailsResponse> getById(Long id) {
@@ -41,6 +42,7 @@ public class BrandServiceImpl implements BrandService {
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = CacheConstants.BRANDS, key = CacheConstants.ALL_KEY)
     @Override
     public DataResult<List<GetBrandResponse>> getAll() {
