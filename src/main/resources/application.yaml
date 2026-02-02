@@ -44,7 +44,7 @@ spring:
 #JWT
 jwt:
   secret: KWp1IEiwQNyQSnrZnjTmQMRtcrMtiEJT2HqFIBT0+9/Zn+bEfICHjwb8pvIqnCfloLKtJ5R5+0v7KPhGxnf9UQ==
-  expiration-ms: 3600000  # 1H
+  expiration-minutes: 60
 
 #Logging
 logging:
