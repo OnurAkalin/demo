@@ -1,7 +1,7 @@
 <scheme name="Rider Dark" version="142" parent_scheme="Darcula">
   <metaInfo>
     <property name="ide">idea</property>
-    <property name="ideVersion">2025.3.1.0.0</property>
+    <property name="ideVersion">2025.3.2.0.0</property>
   </metaInfo>
   <colors>
     <option name="ADDED_LINES_COLOR" value="2C4722" />
