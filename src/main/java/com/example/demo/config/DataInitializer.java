@@ -6,7 +6,8 @@ import com.example.demo.repositories.BrandRepository;
 import com.example.demo.repositories.ModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +18,14 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer implements ApplicationRunner {
 
     private final BrandRepository brandRepository;
     private final ModelRepository modelRepository;
 
     @Override
     @Transactional
-    public void run(String... args) {
+    public void run(ApplicationArguments args) {
         if (isDatabaseAlreadyInitialized()) {
             log.info("Database already initialized, skipping data initialization");
             return;
