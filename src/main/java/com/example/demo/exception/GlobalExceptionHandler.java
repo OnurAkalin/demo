@@ -1,12 +1,15 @@
 package com.example.demo.exception;
 
 import com.example.demo.constant.UIMessages;
+import com.example.demo.util.result.ErrorDataResult;
 import com.example.demo.util.result.ErrorResult;
 import com.example.demo.util.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,23 +27,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> exception(HttpServletRequest request, HandlerMethod handlerMethod, Exception exception) {
         log.error("""
-                              Exception occurred at
-                               \
-                              URL: {}
-                               \
-                              Method: {}
-                               \
-                              Controller: {}
-                               \
-                              Method: {}
-                        """,
+                      Exception occurred at
+                       \
+                      URL: {}
+                       \
+                      Method: {}
+                       \
+                      Controller: {}
+                       \
+                      Method: {}
+                """,
                 request.getRequestURL(),
                 request.getMethod(),
                 handlerMethod.getBeanType().getSimpleName(),
                 handlerMethod.getMethod().getName(),
                 exception);
 
-        return ResponseEntity.ok(new ErrorResult(UIMessages.UNKNOWN_ERROR));
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResult(UIMessages.UNKNOWN_ERROR));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -49,12 +54,25 @@ public class GlobalExceptionHandler {
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
-        return new ResponseEntity<>(new ErrorResult(errors.toString()), HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorDataResult<>(errors.toString(), UIMessages.VALIDATION_ERROR));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Result> handleTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         String errorMessage = String.format("Invalid value for parameter '%s'", ex.getName());
-        return ResponseEntity.badRequest().body(new ErrorResult(errorMessage));
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResult(errorMessage));
+    }
+
+    @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
+    public ResponseEntity<Result> handleLoginFailure() {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResult(UIMessages.LOGIN_FAILURE));
     }
 }

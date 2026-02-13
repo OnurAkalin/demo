@@ -14,11 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,21 +33,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public DataResult<AuthResponse> login(AuthRequest request) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getUsername(),
-                            request.getPassword()
-                    )
-            );
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
 
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-            final String token = jwtService.generateToken(userDetails);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        final String token = jwtService.generateToken(userDetails);
 
-            return new SuccessDataResult<>(new AuthResponse(token), UIMessages.LOGIN_SUCCESS);
-        } catch (BadCredentialsException | UsernameNotFoundException e) {
-            return new ErrorDataResult<>(null, UIMessages.LOGIN_FAILURE);
-        }
+        return new SuccessDataResult<>(new AuthResponse(token), UIMessages.LOGIN_SUCCESS);
     }
 
     @Override
@@ -58,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
             User user = userMapper.registerRequestToUser(request);
             user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
 
             return new SuccessResult(UIMessages.SUCCESS);
         } catch (DataIntegrityViolationException e) {
