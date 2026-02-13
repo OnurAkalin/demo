@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
             return new SuccessResult(UIMessages.SUCCESS);
         } catch (DataIntegrityViolationException e) {
             log.warn("Username is already in use: {}", request.getUsername());
-            return new ErrorResult(UIMessages.ERROR);
+            return new ErrorResult(UIMessages.USED_USERNAME);
         }
     }
 }
