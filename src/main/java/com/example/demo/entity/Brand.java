@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,5 +26,5 @@ public class Brand extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Model> models;
+    private List<Model> models = new ArrayList<>();
 }
