@@ -1,9 +1,9 @@
 package com.example.demo.security;
 
-import com.example.demo.constants.SecurityConstants;
-import com.example.demo.constants.UIMessages;
-import com.example.demo.entities.User;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.constant.SecurityConstants;
+import com.example.demo.constant.UIMessages;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,6 @@ import java.util.Collections;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     private final UserRepository userRepository;
 
     @Override

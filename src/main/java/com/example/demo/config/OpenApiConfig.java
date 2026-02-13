@@ -12,7 +12,6 @@ import java.util.List;
 
 @Configuration
 public class OpenApiConfig {
-
     @Value("${spring.application.name:Demo Application}")
     private String applicationName;
 

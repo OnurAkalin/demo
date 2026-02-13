@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.constants.CacheConstants;
+import com.example.demo.constant.CacheConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,6 @@ import java.util.Map;
 
 @Configuration
 public class RedisCacheConfig {
-
     @Value("${app.cache-prefix:demo:}")
     private String cachePrefix;
 

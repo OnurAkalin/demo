@@ -1,9 +1,9 @@
 package com.example.demo.config;
 
-import com.example.demo.entities.Brand;
-import com.example.demo.entities.Model;
-import com.example.demo.repositories.BrandRepository;
-import com.example.demo.repositories.ModelRepository;
+import com.example.demo.entity.Brand;
+import com.example.demo.entity.Model;
+import com.example.demo.repository.BrandRepository;
+import com.example.demo.repository.ModelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -19,7 +19,6 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements ApplicationRunner {
-
     private final BrandRepository brandRepository;
     private final ModelRepository modelRepository;
 
