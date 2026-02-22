@@ -57,6 +57,8 @@ jwt:
 logging:
   level:
     org.apache.kafka: warn
+    org.springframework.data.repository: warn
+    io.netty: error
     root: info
 #  file:
 #    name: logs/app.log
