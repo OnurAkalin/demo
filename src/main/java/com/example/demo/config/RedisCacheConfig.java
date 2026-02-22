@@ -8,12 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
 public class RedisCacheConfig {
@@ -37,6 +38,12 @@ public class RedisCacheConfig {
                 .build();
     }
 
+    private RedisCacheConfiguration createCacheConfiguration(int durationInMinutes) {
+        int jitter = ThreadLocalRandom.current().nextInt(0, 3);
+        return createDefaultCacheConfiguration()
+                .entryTtl(Duration.ofMinutes(durationInMinutes + jitter));
+    }
+
     private RedisCacheConfiguration createDefaultCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(CacheConstants.DEFAULT_CACHE_DURATION_MIN))
@@ -45,13 +52,8 @@ public class RedisCacheConfig {
                         RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
                 )
                 .serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())
+                        RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json())
                 )
                 .prefixCacheNameWith(cachePrefix);
-    }
-
-    private RedisCacheConfiguration createCacheConfiguration(int durationInMinutes) {
-        return createDefaultCacheConfiguration()
-                .entryTtl(Duration.ofMinutes(durationInMinutes));
     }
 }
