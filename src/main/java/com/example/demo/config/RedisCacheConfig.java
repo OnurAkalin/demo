@@ -10,7 +10,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class RedisCacheConfig {
                 .entryTtl(Duration.ofMinutes(CacheConstants.DEFAULT_CACHE_DURATION_MIN))
                 .disableCachingNullValues()
                 .serializeKeysWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
+                        RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string())
                 )
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json())
