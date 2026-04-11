@@ -24,7 +24,7 @@ services:
 #      - app-network
 
   db:
-    image: postgres:18.1
+    image: postgres:18.3
     container_name: Postgres
     restart: always
     environment:
@@ -59,7 +59,7 @@ services:
 #      - app-network
 
   cache:
-    image: redis:8.4.0
+    image: redis:8.6.2
     container_name: Redis
     restart: always
     command: redis-server --requirepass redis-password
@@ -71,7 +71,7 @@ services:
       - app-network
 
   kafka:
-    image: apache/kafka:4.1.1
+    image: apache/kafka:4.1.2
     container_name: Kafka
     restart: always
     ports:
