@@ -8,6 +8,7 @@ import com.example.demo.dto.request.UpdateBrandRequest;
 import com.example.demo.dto.response.GetBrandDetailsResponse;
 import com.example.demo.dto.response.GetBrandResponse;
 import com.example.demo.entity.Brand;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.BrandMapper;
 import com.example.demo.repository.BrandRepository;
 import com.example.demo.service.BrandService;
@@ -34,7 +35,7 @@ public class BrandServiceImpl implements BrandService {
     public DataResult<GetBrandDetailsResponse> getById(Long id) {
         Brand brand = brandRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (brand == null) {
-            return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
+            throw new NotFoundException();
         }
 
         GetBrandDetailsResponse response = brandMapper.toDetailsDto(brand);
@@ -68,7 +69,7 @@ public class BrandServiceImpl implements BrandService {
     public Result update(UpdateBrandRequest updateBrandRequest) {
         Brand brand = brandRepository.findByIdAndStatus(updateBrandRequest.getId(), Status.ACTIVE);
         if (brand == null) {
-            return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+            throw new NotFoundException();
         }
 
         brandMapper.toEntity(updateBrandRequest, brand);
@@ -82,7 +83,7 @@ public class BrandServiceImpl implements BrandService {
     public Result delete(Long id) {
         Brand brand = brandRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (brand == null) {
-            return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+            throw new NotFoundException();
         }
 
         brand.setStatus(Status.DELETED);

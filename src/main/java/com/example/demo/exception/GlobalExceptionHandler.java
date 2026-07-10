@@ -12,9 +12,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@ControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> exception(HttpServletRequest request, HandlerMethod handlerMethod, Exception exception) {
@@ -57,7 +56,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorDataResult<>(errors.toString(), UIMessages.VALIDATION_ERROR));
+                .body(new ErrorDataResult<>(errors, UIMessages.VALIDATION_ERROR));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -74,5 +73,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResult(UIMessages.LOGIN_FAILURE));
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Result> handleBusinessException(BusinessException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResult(ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Result> handleNotFoundException(NotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResult(ex.getMessage()));
     }
 }

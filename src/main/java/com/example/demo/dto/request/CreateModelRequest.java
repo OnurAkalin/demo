@@ -2,6 +2,7 @@ package com.example.demo.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,5 +19,6 @@ public class CreateModelRequest {
     private String name;
 
     @NotNull(message = "Brand id cannot be empty")
+    @Positive(message = "Brand id must be greater than 0")
     private Long brandId;
 }

@@ -11,6 +11,7 @@ import com.example.demo.dto.response.GetModelResponse;
 import com.example.demo.dto.response.PagedResponse;
 import com.example.demo.entity.Brand;
 import com.example.demo.entity.Model;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.ModelMapper;
 import com.example.demo.repository.BrandRepository;
 import com.example.demo.repository.ModelRepository;
@@ -41,7 +42,7 @@ public class ModelServiceImpl implements ModelService {
     public DataResult<GetModelDetailsResponse> getById(Long id) {
         Model model = modelRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (model == null) {
-            return new ErrorDataResult<>(null, UIMessages.NOT_FOUND_DATA);
+            throw new NotFoundException();
         }
 
         GetModelDetailsResponse response = modelMapper.toDetailsDto(model);
@@ -92,7 +93,7 @@ public class ModelServiceImpl implements ModelService {
     public Result update(UpdateModelRequest updateModelRequest) {
         Model model = modelRepository.findByIdAndStatus(updateModelRequest.getId(), Status.ACTIVE);
         if (model == null) {
-            return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+            throw new NotFoundException();
         }
 
         modelMapper.toEntity(updateModelRequest, model);
@@ -106,7 +107,7 @@ public class ModelServiceImpl implements ModelService {
     public Result delete(Long id) {
         Model model = modelRepository.findByIdAndStatus(id, Status.ACTIVE);
         if (model == null) {
-            return new ErrorResult(UIMessages.NOT_FOUND_DATA);
+            throw new NotFoundException();
         }
 
         model.setStatus(Status.DELETED);
