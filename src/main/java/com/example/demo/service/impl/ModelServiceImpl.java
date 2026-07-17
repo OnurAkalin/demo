@@ -22,15 +22,14 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(isolation = Isolation.READ_COMMITTED)
 public class ModelServiceImpl implements ModelService {
     private final ModelRepository modelRepository;
     private final BrandRepository brandRepository;
@@ -61,20 +60,32 @@ public class ModelServiceImpl implements ModelService {
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public DataResult<PagedResponse<GetModelResponse>> getAllPaged(int pageNo) {
-        PageRequest pageRequest = PageRequest.of(Math.max(pageNo - 1, 0), AppConstants.MODELS_PAGE_SIZE);
+        PageRequest pageRequest = PageRequest.of(
+                Math.max(pageNo - 1, 0),
+                AppConstants.MODELS_PAGE_SIZE,
+                Sort.by("id").ascending()
+        );
 
         Page<Model> models = modelRepository.findAllByStatus(Status.ACTIVE, pageRequest);
 
         List<GetModelResponse> content = modelMapper.toDtoList(models.getContent());
 
-        PagedResponse<GetModelResponse> response = new PagedResponse<>(content, models.getNumber() + 1, models.getSize(), models.getTotalPages());
+        PagedResponse<GetModelResponse> response = new PagedResponse<>(
+                content,
+                models.getNumber() + 1,
+                models.getSize(),
+                models.getTotalPages(),
+                models.getTotalElements()
+        );
 
-        return new SuccessDataResult<>(response, UIMessages.SUCCESS);
+        return new SuccessDataResult<>(response);
     }
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
+    @Transactional
     @Override
     public Result add(CreateModelRequest createModelRequest) {
         Brand brand = brandRepository.findByIdAndStatus(createModelRequest.getBrandId(), Status.ACTIVE);
@@ -89,6 +100,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
+    @Transactional
     @Override
     public Result update(UpdateModelRequest updateModelRequest) {
         Model model = modelRepository.findByIdAndStatus(updateModelRequest.getId(), Status.ACTIVE);
@@ -103,6 +115,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
+    @Transactional
     @Override
     public Result delete(Long id) {
         Model model = modelRepository.findByIdAndStatus(id, Status.ACTIVE);
@@ -117,6 +130,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
+    @Transactional
     @Override
     public void hardDeleteAll() {
         modelRepository.deleteAll();

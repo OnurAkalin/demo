@@ -13,8 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class PagedResponse<T> {
     private List<T> content;
-    private int pageNumber;
-    private int pageSize;
-    private int totalPages;
+    private long pageNumber;
+    private long pageSize;
+    private long totalPages;
+    private long totalElements;
 }
 

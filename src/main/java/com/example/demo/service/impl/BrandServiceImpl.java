@@ -12,25 +12,26 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.BrandMapper;
 import com.example.demo.repository.BrandRepository;
 import com.example.demo.service.BrandService;
-import com.example.demo.util.result.*;
+import com.example.demo.util.result.DataResult;
+import com.example.demo.util.result.Result;
+import com.example.demo.util.result.SuccessDataResult;
+import com.example.demo.util.result.SuccessResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(isolation = Isolation.READ_COMMITTED)
 public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
 
-    @Transactional(readOnly = true)
     @Cacheable(value = CacheConstants.BRANDS, key = "#id")
+    @Transactional(readOnly = true)
     @Override
     public DataResult<GetBrandDetailsResponse> getById(Long id) {
         Brand brand = brandRepository.findByIdAndStatus(id, Status.ACTIVE);
@@ -43,8 +44,8 @@ public class BrandServiceImpl implements BrandService {
         return new SuccessDataResult<>(response, UIMessages.SUCCESS);
     }
 
-    @Transactional(readOnly = true)
     @Cacheable(value = CacheConstants.BRANDS, key = CacheConstants.ALL_KEY)
+    @Transactional(readOnly = true)
     @Override
     public DataResult<List<GetBrandResponse>> getAll() {
         List<Brand> brands = brandRepository.findAllByStatus(Status.ACTIVE);
@@ -55,6 +56,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Transactional
     @Override
     public Result add(CreateBrandRequest createBrandRequest) {
         Brand brand = brandMapper.toEntity(createBrandRequest);
@@ -65,6 +67,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Transactional
     @Override
     public Result update(UpdateBrandRequest updateBrandRequest) {
         Brand brand = brandRepository.findByIdAndStatus(updateBrandRequest.getId(), Status.ACTIVE);
@@ -79,6 +82,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @CacheEvict(value = {CacheConstants.BRANDS, CacheConstants.MODELS}, allEntries = true)
+    @Transactional
     @Override
     public Result delete(Long id) {
         Brand brand = brandRepository.findByIdAndStatus(id, Status.ACTIVE);
@@ -94,6 +98,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @CacheEvict(value = CacheConstants.BRANDS, allEntries = true)
+    @Transactional
     @Override
     public void hardDeleteAll() {
         brandRepository.deleteAll();
