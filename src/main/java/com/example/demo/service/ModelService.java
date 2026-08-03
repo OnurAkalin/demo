@@ -15,6 +15,8 @@ public interface ModelService {
 
     DataResult<List<GetModelResponse>> getAll();
 
+    DataResult<List<GetModelResponse>> getAllByBrandId(Long brandId);
+
     DataResult<PagedResponse<GetModelResponse>> getAllPaged(int pageNo);
 
     Result add(CreateModelRequest createModelRequest);

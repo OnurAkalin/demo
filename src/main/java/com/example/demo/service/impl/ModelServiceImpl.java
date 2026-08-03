@@ -61,6 +61,17 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = CacheConstants.MODELS, key = "'brand-' + #brandId")
+    @Override
+    public DataResult<List<GetModelResponse>> getAllByBrandId(Long brandId) {
+        List<Model> models = modelRepository.findAllByBrandIdAndStatus(brandId, Status.ACTIVE);
+
+        List<GetModelResponse> response = modelMapper.toDtoList(models);
+
+        return new SuccessDataResult<>(response, UIMessages.SUCCESS);
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public DataResult<PagedResponse<GetModelResponse>> getAllPaged(int pageNo) {
         PageRequest pageRequest = PageRequest.of(

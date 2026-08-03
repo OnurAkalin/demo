@@ -30,6 +30,11 @@ public class ModelController {
         return modelService.getAll();
     }
 
+    @GetMapping(path = "/getAllByBrandId/{brandId}")
+    public DataResult<List<GetModelResponse>> getAllByBrandId(@PathVariable Long brandId) {
+        return modelService.getAllByBrandId(brandId);
+    }
+
     @GetMapping(path = "/getAll/{pageNo}")
     public DataResult<PagedResponse<GetModelResponse>> getAllPaged(@PathVariable int pageNo) {
         return modelService.getAllPaged(pageNo);
