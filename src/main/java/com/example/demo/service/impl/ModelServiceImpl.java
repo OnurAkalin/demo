@@ -101,7 +101,7 @@ public class ModelServiceImpl implements ModelService {
     public Result add(CreateModelRequest createModelRequest) {
         Brand brand = brandRepository.findByIdAndStatus(createModelRequest.getBrandId(), Status.ACTIVE);
         if (brand == null) {
-            return new ErrorResult(UIMessages.ERROR);
+            throw new NotFoundException();
         }
 
         Model model = modelMapper.toEntity(createModelRequest);

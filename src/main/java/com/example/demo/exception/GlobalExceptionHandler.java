@@ -6,8 +6,10 @@ import com.example.demo.util.result.ErrorResult;
 import com.example.demo.util.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
@@ -35,12 +37,14 @@ public class GlobalExceptionHandler {
                       Controller: {}
                        \
                       Method: {}
+                       \
+                      Exception: {}
                 """,
                 request.getRequestURL(),
                 request.getMethod(),
                 handlerMethod.getBeanType().getSimpleName(),
                 handlerMethod.getMethod().getName(),
-                exception);
+                ExceptionUtils.getStackTrace(exception));
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -66,6 +70,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResult(errorMessage));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Result> handleHttpMessageNotReadableException() {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResult("Request body is missing or invalid."));
     }
 
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
