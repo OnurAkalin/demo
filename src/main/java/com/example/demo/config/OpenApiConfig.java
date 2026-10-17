@@ -18,7 +18,7 @@ public class OpenApiConfig {
     @Value("${app.version:1.0}")
     private String version;
 
-    @Value("${app.description:Car Brand and Model Management System}")
+    @Value("${app.description:Demo description}")
     private String description;
 
     @Bean
@@ -33,10 +33,13 @@ public class OpenApiConfig {
                 .title(applicationName + " API")
                 .version(version)
                 .description(description)
-                .license(new License().name("Onur Akalın").url("https://github.com/OnurAkalin"));
+                .license(new License().name("Onur Akalın")
+                .url("https://github.com/OnurAkalin"));
     }
 
     private List<Server> serverList() {
-        return List.of(new Server().url("http://localhost:8080").description("Local Development Server"));
+        return List.of(new Server()
+                        .url("http://localhost:8080")
+                        .description("Local Development Server"));
     }
 }

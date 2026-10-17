@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Slf4j
@@ -27,8 +27,17 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> exception(HttpServletRequest request, HandlerMethod handlerMethod, Exception exception) {
+        String controller = "Unknown";
+        String method = "Unknown";
+
+        if (handlerMethod != null) {
+            controller = handlerMethod.getBeanType().getSimpleName();
+            method = handlerMethod.getMethod().getName();
+
+        }
+
         log.error("""
-                      Exception occurred at
+                      Unhandled exception occurred at
                        \
                       URL: {}
                        \
@@ -42,8 +51,8 @@ public class GlobalExceptionHandler {
                 """,
                 request.getRequestURL(),
                 request.getMethod(),
-                handlerMethod.getBeanType().getSimpleName(),
-                handlerMethod.getMethod().getName(),
+                controller,
+                method,
                 ExceptionUtils.getStackTrace(exception));
 
         return ResponseEntity
@@ -53,7 +62,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Result> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, String> errors = new LinkedHashMap<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
@@ -65,6 +74,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Result> handleTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        log.warn("Invalid parameter value. parameter={}, value={}, requiredType={}",
+                ex.getName(),
+                ex.getValue(),
+                ex.getRequiredType()
+        );
         String errorMessage = String.format("Invalid value for parameter '%s'", ex.getName());
 
         return ResponseEntity
@@ -73,10 +87,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Result> handleHttpMessageNotReadableException() {
+    public ResponseEntity<Result> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        log.warn("Invalid request body -> {}", ex.getMessage());
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResult("Request body is missing or invalid."));
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Result> handleBusinessException(BusinessException ex) {
+        return ResponseEntity
+                .status(ex.getHttpStatus())
+                .body(new ErrorResult(ex.getMessage()));
+
     }
 
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
@@ -84,20 +108,5 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResult(UIMessages.LOGIN_FAILURE));
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<Result> handleBusinessException(BusinessException ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResult(ex.getMessage()));
-
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Result> handleNotFoundException(NotFoundException ex) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResult(ex.getMessage()));
     }
 }
