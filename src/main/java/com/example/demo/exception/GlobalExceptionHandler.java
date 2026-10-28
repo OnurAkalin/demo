@@ -6,7 +6,6 @@ import com.example.demo.util.result.ErrorResult;
 import com.example.demo.util.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -47,13 +46,13 @@ public class GlobalExceptionHandler {
                        \
                       Method: {}
                        \
-                      Exception: {}
+                              Exception:
                 """,
                 request.getRequestURL(),
                 request.getMethod(),
                 controller,
                 method,
-                ExceptionUtils.getStackTrace(exception));
+                exception);
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -63,8 +62,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Result> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();
+
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.put(error.getField(), error.getDefaultMessage());
+            errors.putIfAbsent(error.getField(), error.getDefaultMessage());
         }
 
         return ResponseEntity
@@ -74,10 +74,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Result> handleTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        log.warn("Invalid parameter value. parameter={}, value={}, requiredType={}",
+        log.warn("Invalid parameter value. parameter={}, requiredType={}",
                 ex.getName(),
-                ex.getValue(),
-                ex.getRequiredType()
+                ex.getRequiredType() != null ? ex.getRequiredType() : "Unknown"
         );
         String errorMessage = String.format("Invalid value for parameter '%s'", ex.getName());
 
