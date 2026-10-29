@@ -13,7 +13,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Configuration
 public class RedisCacheConfig {
@@ -38,9 +37,8 @@ public class RedisCacheConfig {
     }
 
     private RedisCacheConfiguration createCacheConfiguration(int durationInMinutes) {
-        int jitter = ThreadLocalRandom.current().nextInt(0, 3);
         return createDefaultCacheConfiguration()
-                .entryTtl(Duration.ofMinutes(durationInMinutes + jitter));
+                .entryTtl(Duration.ofMinutes(durationInMinutes));
     }
 
     private RedisCacheConfiguration createDefaultCacheConfiguration() {

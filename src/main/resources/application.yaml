@@ -7,7 +7,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
     open-in-view: true
     properties:
       hibernate:
@@ -17,13 +16,12 @@ spring:
           batch_size: 50
   main:
     allow-circular-references: true
-    allow-bean-definition-overriding: true
   datasource:
     hikari:
-      maximum-pool-size: 30  # Maks. eşzamanlı DB connection. Default: 10
-      minimum-idle: 10  # Hazır bekleyen min. connection. Default: maximum-pool-size
-      idle-timeout: 60_0000  # Boş connection kapanma süresi (ms). Default: 600000 (10dk)
-      connection-timeout: 10000  # Connection bekleme süresi (ms). Default: 30000
+      maximum-pool-size: 15  # Maks. eşzamanlı DB connection. Default: 10
+      minimum-idle: 5  # Hazır bekleyen min. connection. Default: maximum-pool-size
+      idle-timeout: 600_000  # Boş connection kapanma süresi (ms). Default: 600000 (10dk)
+      connection-timeout: 10_000  # Connection bekleme süresi (ms). Default: 30000
       max-lifetime: 1_800_000  # Connection maksimum ömür (ms). Default: 1800000 (30dk)
       leak-detection-threshold: 20_000  # 20sn'den uzun tutulursa leak uyarısı. Default: 0 (kapalı)
     url: 'jdbc:postgresql://localhost:5432/Demo'
@@ -60,6 +58,8 @@ logging:
     org.springframework.data.repository: warn
     io.netty: error
     root: info
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
 #  file:
 #    name: logs/app.log
 #  logback:
